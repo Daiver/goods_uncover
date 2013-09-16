@@ -8,7 +8,6 @@ pageaddr ='http://google.com/search?hl=en&as_q=%s&num=%s&as_qdr=%s'%('4710937382
 
 g = Grab(log_file='out.html')
 g.go(pageaddr)
-try:
-    print g.xpath_text('//a[@class="b-serp-item__title-link"]')
-except:
-    print g.xpath_text('//*')
+#print g.xpath_text('//a[@class="b-serp-item__title-link"]')
+#print g.xpath_text('//h3')
+print g.doc.select('//h3').one()
