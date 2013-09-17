@@ -1,1 +1,243 @@
-<img src="{{STATIC_URL}}img/1.jpg">
+<!DOCTYPE html>
+{% load i18n %}
+
+<html>
+    <head>
+        <title>
+            {%block title%}
+                Main
+            {%endblock%}
+        </title>        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="{{ STATIC_URL }}scripts/jquery-1.9.1.js"></script>
+        
+        <script type="text/javascript" src="{{ STATIC_URL }}css/bootstrap/js/bootstrap.js"></script>
+         <script src="{{ STATIC_URL }}css/bootstrap/js/bootstrap.min.js"></script>
+<!-- <link href="{{ STATIC_URL }}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"> -->
+        <link href="{{ STATIC_URL }}css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
+       
+
+
+        <style type="text/css">
+          html,body {
+            height: 100%;            
+            padding-top: 5px;
+            padding-bottom: 40px;
+            padding-left: 40px;
+            padding-right: 40px;
+          }
+          .sidebar-nav {
+            padding: 11px 0;
+          }
+          
+        .alert_block {
+            position:fixed;
+            bottom:30%;
+            left: 0%;
+            padding:6px;
+            text-align:center;
+            z-index:9999999999;
+            display:block;      
+        }
+
+        .file_block {
+            background-color: #fff;
+            color: #000;        
+        }
+          #wrap {
+            min-height: 90%;
+            height: auto !important;
+            height: 100%;
+            /* Negative indent footer by it's height */
+            margin: 0 auto -60px;
+          }
+
+          /* Set the fixed height of the footer here */
+          #push,
+          #footer {
+            height: 60px;
+          }
+          #footer {
+            background-color: #f5f5f5;
+          }
+            
+          @media (max-width: 980px) {
+            /* Enable use of floated navbar text */
+            .navbar-text.pull-right {
+              float: none;
+              padding-left: 5px;
+              padding-right: 5px;
+            }
+            #footer {
+              margin-left: -20px;
+              margin-right: -20px;
+              padding-left: 20px;
+              padding-right: 20px;
+            }
+          }
+          
+        #wrap > .container {
+                padding-top: 60px;
+              }
+              .container .credit {
+                margin: 20px 0;
+              }
+        
+              code {
+                font-size: 80%;
+              }
+
+        #upBlock {
+            position:fixed;
+            bottom:100px;
+            left: 80%;
+            color:#000000;
+            padding:6px;
+            text-align:center;
+            z-index:9999999999;
+            display:none;
+        }
+        
+        </style>
+    </head>
+    <body>
+<div id="wrap">
+    <div class="alert_block" id="alert_block">
+        {% block messages %}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}                        
+                            <li{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>
+                                <button type="button" class="close" id="close_alert" data-dismiss="alert">&times;</button>                            
+                                {{ message }}
+                            <script type = "text/javascript">
+                                var mb = $("#alert_block")
+                                mb.animate({'left':"5%"}, {duration:1200}).animate({'opacity':0}, {duration:6100});
+                                var timerID = setTimeout(function () {
+                                    $("#close_alert").trigger("click");
+                                    mb.css('opacity',1)
+                                },12000);
+                                mb.mouseenter(function() {
+                                    clearTimeout(timerID);
+                                    mb.stop();
+                                    mb.css('opacity',1);
+                                });
+                            </script>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endblock %}
+    </div>
+    
+        <script src="{{ STATIC_URL }}css/bootstrap/js/bootstrap.min.js"></script>
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="container-fluid">
+              <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="brand" href="#">Workgroup</a>
+              <div class="nav-collapse collapse">
+                <ul class="nav">
+                  <!-- <li class="active"><a href="index">Home</a></li> -->
+                  <!----> 
+                    <li><a href="/">Home</a></li>
+                   <li><a href="#about">About</a></li>
+                  <li><a href="#contact">Contact</a></li> 
+                </ul>
+                
+                <form class="navbar-form pull-right">
+                  {% if not user.is_authenticated %}
+                      <a href="/login/" class="btn btn-success btn-small">Войти</a>
+                      
+                  {% else %}
+                      
+                      <p class="navbar-text pull-right">
+                          Привет, {{user.username}}   
+                      
+                      <a href="/logout/" class="btn btn-success btn-small">Выйти</a>
+                      
+                      </p>
+                  {% endif %}
+                </form>
+                
+                
+              </div><!--/.nav-collapse -->
+            </div><!--container-fluid-->
+          </div><!--navabar-inner-->
+        </div><!--navabar-->
+        
+
+        <div class="row-fluid">
+        <div class="span12">        
+        <div class="span6 offset3" >
+            
+        </div>
+        </div>
+
+        {% if user.is_authenticated %}
+        <div class="span2">
+          <div class="well sidebar-nav">
+            <ul class="nav nav-list">
+            <li class="nav-header">Меню</li>
+            <li><a href="/project/new/">Создать группу</a></li>
+            <li><a href="/project/my/">Мои проекты</a></li>
+            <li><a href="/task/my_tasks/" onclick=''>Мои задания</a></li>              
+            <li><a href="/project/my_invites/">Приглашения 
+                {%if user.new_invite_count != 0%} 
+                        [+{{user.new_invite_count}}] 
+                {%endif%} 
+            </a></li>
+              
+            </ul>
+          </div><!--/.well -->
+        </div><!--/span-->
+        {% endif %}
+
+            <div class="span7 " id="mainContent">
+                {% block application %}
+                    
+                    <div id="myCarousel" class="carousel slide" >
+                      <ol class="carousel-indicators">
+                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#myCarousel" data-slide-to="1"></li>
+                        
+                      </ol>
+                      <!-- Carousel items -->
+                      <div class="carousel-inner">
+                        <div class="active item"><img src="{{STATIC_URL}}/img/3.jpg"></div>
+                        <div class="item"><img src="{{STATIC_URL}}/img/1.jpg"> </div>
+                        <div class="item"><img src="{{STATIC_URL}}/img/2.jpg"></div>
+                      </div>
+                      <!-- Carousel nav -->
+                      <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                      <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+                    </div>
+    
+                {% endblock %}
+    
+            </div><!--span6 offset1-->
+            <div class="span2" align="right">            
+                {% block menu %}                
+                {% endblock %}
+                
+            </div>
+        </div><!--/row-fluid-->
+
+</div><!--wrap-->
+<div id="push"></div>
+<div id="upBlock"><img align="right" src="{{ STATIC_URL }}img/loader.gif" border="0" /></div> 
+    </div>    
+    <div id="footer">
+      <div class="container">
+        <p class="muted credit">&copy 2013 </a>.</p>
+      </div><!--container-->
+         
+    </div><!--footer-->
+  
+       
+    </body>
+</html>
