@@ -27,11 +27,14 @@ def filter_good_name(dct):
 
 if __name__ == '__main__':
     #data = zgoogle.google_it('4710937382310', 20)
-    data = zgoogle.google_it('4605922006695', 20)
+    #data = zgoogle.google_it(u'4605922006695', 20)
+    #data = zgoogle.google_it(u'8700216302029', 20)
+    data = zgoogle.google_it(u'4606224035956', 20)
     text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
 
     dct = get_freq_dict(text)
     lst = [(dct[x], x) for x in dct]
     lst.sort()
     print lst
-    for x in filter_good_name(dct): print x
+    print filter_good_name(dct)
+    ##for x in filter_good_name(dct): print x
