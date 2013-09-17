@@ -17,7 +17,7 @@ def get_freq_dict(text):
         res[x] += 1
     return res
 
-def filter_good(dct):
+def filter_good_name(dct):
     lst = [(dct[x], x) for x in dct]
     lst.sort()
     lst.reverse()
@@ -25,11 +25,9 @@ def filter_good(dct):
     max_length = 6
     return map(last, filter(lambda x: x[0] >= (max/2), lst[:max_length]))
 
-
-data = zgoogle.google_it('4710937382310', 20)
-#print data
-
+#data = zgoogle.google_it('4710937382310', 20)
+data = zgoogle.google_it('samsung', 20)
 text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
 
 dct = get_freq_dict(text)
-print filter_good(dct)
+print filter_good_name(dct)
