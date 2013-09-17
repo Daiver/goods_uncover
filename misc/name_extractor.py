@@ -25,12 +25,13 @@ def filter_good_name(dct):
     max_length = 6
     return map(last, filter(lambda x: x[0] >= (max/2), lst[:max_length]))
 
-#data = zgoogle.google_it('4710937382310', 20)
-data = zgoogle.google_it('4605922006695', 20)
-text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
+if __name__ == '__main__':
+    #data = zgoogle.google_it('4710937382310', 20)
+    data = zgoogle.google_it('4605922006695', 20)
+    text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
 
-dct = get_freq_dict(text)
-lst = [(dct[x], x) for x in dct]
-lst.sort()
-print lst
-for x in filter_good_name(dct): print x
+    dct = get_freq_dict(text)
+    lst = [(dct[x], x) for x in dct]
+    lst.sort()
+    print lst
+    for x in filter_good_name(dct): print x
