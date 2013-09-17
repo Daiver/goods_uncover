@@ -9,8 +9,9 @@ def ym_search(q):
     g.go(pageaddr)
     title = g.doc.select('//div[@class="b-offers b-offers_type_guru b-offers_type_guru_mix"]/div/h3/a').text()
     href = g.doc.select('//div[@class="b-offers b-offers_type_guru b-offers_type_guru_mix"]/div/h3/a/@href').text()
-    print title
-    print href
+    return (title, href)
+    #print title
+    #print href
 
     #hrefs = g.doc.select('//div/h3/a/@href').text_list()
     #return zip(titles, hrefs)
