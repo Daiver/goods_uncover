@@ -1,6 +1,6 @@
 from grab import Grab
 
-def google_it(q, num):
+def google_it(q, num=10):
     pageaddr ='http://google.com/search?hl=en&as_q=%s&num=%s&as_qdr=%s'%(q, str(num),'')
     g = Grab()
     g.go(pageaddr)
@@ -8,4 +8,5 @@ def google_it(q, num):
     hrefs = g.doc.select('//div/h3/a/@href').text_list()
     return zip(titles, hrefs)
 
-print google_it("ya.ru", 10)
+if __name__ == '__main__':
+    print google_it("ya.ru", 10)
