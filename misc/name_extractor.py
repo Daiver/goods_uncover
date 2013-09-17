@@ -5,12 +5,12 @@ last = lambda x: x[-1]
 
 def normalize_text(text):
     text = text.lower()
-    text = text.replace('.', ' . ').replace(',', ' , ').replace('-', ' - ') # make tokenizer
+    text = text.replace('.', ' . ').replace(',', ' , ').replace('-', ' - ').replace('|', ' | ') # make tokenizer
     return text
 
 def get_freq_dict(text):
     res = {}
-    dels = [' ', '.', ',', '-']
+    dels = [' ', '.', ',', '-', '|']
     for x in filter(lambda x: x not in dels, text.split()):
         if x not in res:
             res[x] = 0.0
@@ -26,8 +26,11 @@ def filter_good_name(dct):
     return map(last, filter(lambda x: x[0] >= (max/2), lst[:max_length]))
 
 #data = zgoogle.google_it('4710937382310', 20)
-data = zgoogle.google_it('samsung', 20)
+data = zgoogle.google_it('4605922006695', 20)
 text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
 
 dct = get_freq_dict(text)
-print filter_good_name(dct)
+lst = [(dct[x], x) for x in dct]
+lst.sort()
+print lst
+for x in filter_good_name(dct): print x
