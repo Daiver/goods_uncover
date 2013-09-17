@@ -7,9 +7,14 @@ pageaddr ='http://google.com/search?hl=en&as_q=%s&num=%s&as_qdr=%s'%('4710937382
 #pageaddr = 'http://www.google.ru/?q=4710937382310#newwindow=1&psj=1&q=4710937382310' 
 
 print pageaddr
-exit()
+#exit()
 g = Grab(log_file='out.html')
 g.go(pageaddr)
 #print g.xpath_text('//a[@class="b-serp-item__title-link"]')
 #print g.xpath_text('//h3')
-print g.doc.select('//h3').one()
+#print g.doc.select('//h3').one()
+elem = g.doc.select('//div/h3')
+print elem.text()
+elem = g.doc.select('//div/h3').text_list()
+print elem
+print len(elem)
