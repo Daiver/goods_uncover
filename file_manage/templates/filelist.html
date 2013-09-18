@@ -1,3 +1,6 @@
+{%extends "main.html"%}
+
+{%block application%}
              {%for file in files%}
                 <div class="file_block" id="{{file.id}}">
                     <br><li>{{file.FileName}} {{file.Uploaded_date}} <a href="/static/{{file.File}}/">Скачать</a> <a href="/files/del/{{file.id}}/">Удалить</a></li><br>
@@ -27,3 +30,5 @@
                 </tr>
                 </table>
             </form>
+
+{%endblock%}

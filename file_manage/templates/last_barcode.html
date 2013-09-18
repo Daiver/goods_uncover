@@ -1,0 +1,22 @@
+{%extends "main.html"%}
+
+{%block application%}
+
+    <img src="/static/{{image.File}}/" width=200 />
+    {{data}}    
+    
+
+<form  name="file" enctype="multipart/form-data" action="/files/add/" method="POST">{% csrf_token %}
+    <table>
+    {{uploadform}}
+    <tr>
+    	<td colspan="2" align="center">
+    		<input class="btn btn-success btn-small" type="submit" value="Загрузить"><br>
+    	</td>
+    </tr>
+    </table>
+</form>
+
+{%endblock%}
+            
+
