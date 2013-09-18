@@ -1,4 +1,3 @@
-import zgoogle
 
 head = lambda x: x[0]
 last = lambda x: x[-1]
@@ -29,6 +28,7 @@ if __name__ == '__main__':
     #data = zgoogle.google_it('4710937382310', 20)
     #data = zgoogle.google_it(u'4605922006695', 20)
     #data = zgoogle.google_it(u'8700216302029', 20)
+    import zgoogle
     data = zgoogle.google_it(u'4606224035956', 20)
     text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
 

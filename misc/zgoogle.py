@@ -6,8 +6,11 @@ def google_it(q, num=10):
     g = Grab()
     g.go(pageaddr)
     titles = g.doc.select('//div/h3').text_list()
+    desc = g.doc.select('//div/div/div/span[@class="st"]').text_list()
+    #for x in desc:
+    #    print '>>>>', x
     hrefs = g.doc.select('//div/h3/a/@href').text_list()
-    return zip(titles, hrefs)
+    return zip(titles, desc, hrefs)
 
 if __name__ == '__main__':
     num = int(sys.argv[2]) if len(sys.argv) > 2 else 10
