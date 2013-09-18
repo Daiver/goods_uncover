@@ -2,7 +2,7 @@ db_set = {
     'engine'    : 'mysql',
     'name'      : 'goods_uncover',
     'user'      : 'root',
-    'password'  : 'ivan',
+    'password'  : '123456',
     'host'      : '',
     'port'      : '',
     'debug'     : True,

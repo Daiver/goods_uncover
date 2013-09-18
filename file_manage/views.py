@@ -16,7 +16,7 @@ def allfiles(request):
     files = UploadFile.objects.all()
     #print files
     uploadform = UploadForm(None, None)
-    template = get_template("main.html")
+    template = get_template("filelist.html")
     context = RequestContext(request, {
         'files' : files,
         'uploadform' : uploadform,
@@ -36,13 +36,27 @@ def addfile(request):
     else:
         uploadform = UploadForm(None, None)
     
-    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
-    template = get_template("main.html")     
+#    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
+ #   template = get_template("main.html")     
+ #   context = RequestContext(request, {
+ #       'data' : data,
+    #})
+    return HttpResponseRedirect('/files/last/')
+
+def last_barcode(request):
+
+    uploadform = UploadForm(None)
+    last_file = UploadFile.objects.filter(Owner=request.user).order_by("-Uploaded_date")
+    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(last_file[0].File)))
+    template = get_template("last_barcode.html")     
     context = RequestContext(request, {
+        'image' : last_file[0],
         'data' : data,
+        'uploadform' : uploadform,
     })
     return HttpResponse(template.render(context))
- 
+
+    return 
     
 def delfile(request,file_id):
     if not request.user.is_authenticated():
