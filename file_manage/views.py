@@ -34,9 +34,13 @@ def addfile(request):
             new_file.save()
     else:
         uploadform = UploadForm(None, None)
-        
-    return HttpResponseRedirect('/files/all/')
-    
+
+    template = get_template("main.html")     
+    context = RequestContext(request, {
+        'data' : data,
+    })
+    return HttpResponse(template.render(context))
+ 
     
 def delfile(request,file_id):
     if not request.user.is_authenticated():
