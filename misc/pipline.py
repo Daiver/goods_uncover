@@ -17,7 +17,8 @@ def barcode_search(imgname):
     sym = None
     for symbol in image:
         print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
-        sym = symbol.data
+        if str(symbol.type) == 'EAN13':
+            sym = symbol.data
 
     if None == sym: return []
 
