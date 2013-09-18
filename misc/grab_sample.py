@@ -6,8 +6,20 @@ pageaddr = 'http://market.yandex.ru/product/7880758/reviews'
 pageaddr ='http://google.com/search?hl=en&as_q=%s&num=%s&as_qdr=%s'%('4710937382310',str(10),'')
 #pageaddr = 'http://www.google.ru/?q=4710937382310#newwindow=1&psj=1&q=4710937382310' 
 
-g = Grab(log_file='out.html')
+print pageaddr
+#exit()
+#g = Grab(log_file='out.html')
+g = Grab()
 g.go(pageaddr)
 #print g.xpath_text('//a[@class="b-serp-item__title-link"]')
 #print g.xpath_text('//h3')
-print g.doc.select('//h3').one()
+#print g.doc.select('//h3').one()
+#titles = g.doc.select('//div/h3')
+elems = g.doc.select('//div/h3')
+hrefs = g.doc.select('//div/h3/a/@href').text_list()
+titles = elems.text_list()
+#hrefs = g.doc.select('//div/div/div[@class="f kv"]/cite').text_list()
+print titles
+print hrefs
+print len(titles)
+print len(hrefs)
