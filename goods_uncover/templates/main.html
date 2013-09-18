@@ -168,6 +168,9 @@
           </div><!--navabar-inner-->
         </div><!--navabar-->
         
+{%block application%}
+                 {% include "filelist.html" with uploadform=uploadform files=files %}
+{%endblock%}
 
 
 </div><!--wrap-->
