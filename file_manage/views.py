@@ -9,6 +9,7 @@ from models import UploadFile
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
 from django.contrib import messages
+from misc.pipline import barcode_search
 
 def allfiles(request):
     
@@ -34,7 +35,8 @@ def addfile(request):
             new_file.save()
     else:
         uploadform = UploadForm(None, None)
-
+    
+    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
     template = get_template("main.html")     
     context = RequestContext(request, {
         'data' : data,
