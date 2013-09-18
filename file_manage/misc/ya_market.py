@@ -4,7 +4,7 @@ from grab import Grab
 def ym_search(q):
     #pageaddr ='http://google.com/search?hl=en&as_q=%s&num=%s&as_qdr=%s' % ('+'.join(q.split()), str(num),'')
     pageaddr ='http://market.yandex.ru/search.xml?text=%s' % ('+'.join(q.split()))
-    print pageaddr
+    #print pageaddr
     g = Grab()
     g.go(pageaddr)
     title = g.doc.select('//div[@class="b-offers b-offers_type_guru b-offers_type_guru_mix"]/div/h3/a').text()

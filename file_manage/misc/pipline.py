@@ -19,8 +19,13 @@ def barcode_search(imgname):
         print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
         sym = symbol.data
     data = zgoogle.google_it(u'%s' % sym, 20)
-    text = reduce(lambda x, y: x + y, map(name_extractor.normalize_text, map(name_extractor.head, data)))
+    text = reduce(lambda x, y: x + y, map(name_extractor.normalize_text, map(lambda x: x[0] + ' ' + x[1], data)))
     dct = name_extractor.get_freq_dict(text)
+    '''lst = [(dct[x], x) for x in dct]
+    lst.sort()
+    for x in lst:
+        print x[0], x[1]'''
+
     return name_extractor.filter_good_name(dct)
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 
 head = lambda x: x[0]
 last = lambda x: x[-1]
+init = lambda x: x[:-1]
 
 def normalize_text(text):
     text = text.lower()
@@ -30,7 +31,9 @@ if __name__ == '__main__':
     #data = zgoogle.google_it(u'8700216302029', 20)
     import zgoogle
     data = zgoogle.google_it(u'4606224035956', 20)
-    text = reduce(lambda x, y: x + y, map(normalize_text, map(head, data)))
+    text = reduce(lambda x, y: x + y, map(normalize_text, map(lambda x: x[0] + ' ' + x[1], data)))
+    print text
+    exit()
 
     dct = get_freq_dict(text)
     lst = [(dct[x], x) for x in dct]
