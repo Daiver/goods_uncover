@@ -12,6 +12,11 @@ class UploadFile(models.Model):
     Owner = models.ForeignKey(User)
     Description = models.CharField(max_length=255)
     FileName = models.CharField(max_length=255)
-    File = models.FileField(upload_to=make_upload_path)
+    File = models.ImageField(upload_to=make_upload_path)
     #Path = models.CharField(max_length=255,default=make_upload_path)
     Uploaded_date = models.DateTimeField(auto_now_add=True)
+
+class Barcode(models.Model):
+    FK_UploadFile = models.ForeignKey(UploadFile)
+    Barcode = models.CharField(max_length=16)
+    Data = models.TextField(max_length=1000)
