@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import os
+from django.utils.encoding import smart_text
 from django.http import HttpResponse
 from django.template.loader import get_template
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
-from models import UploadFile
+from models import UploadFile, Barcode
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
 from django.contrib import messages
@@ -33,9 +34,16 @@ def addfile(request):
             f =request.FILES['File']            
             new_file = UploadFile(FileName=f.name,Owner=request.user,File=f)
             new_file.save()
+            data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
+            magic_numbers = ""
+            barcode = Barcode(FK_UploadFile=new_file, Data=data, Barcode=magic_numbers)
+            barcode.save()
+  
+        else:
+            messages.error(request, "Это не изображение")
+            return HttpResponseRedirect(request.META['HTTP_REFERER'])            
     else:
         uploadform = UploadForm(None, None)
-    
 #    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
  #   template = get_template("main.html")     
  #   context = RequestContext(request, {
@@ -44,14 +52,14 @@ def addfile(request):
     return HttpResponseRedirect('/files/last/')
 
 def last_barcode(request):
-
     uploadform = UploadForm(None)
-    last_file = UploadFile.objects.filter(Owner=request.user).order_by("-Uploaded_date")
-    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(last_file[0].File)))
+    #last_file = UploadFile.objects.filter(Owner=request.user).order_by("-Uploaded_date")
+    barcode = Barcode.objects.filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")
     template = get_template("last_barcode.html")     
     context = RequestContext(request, {
-        'image' : last_file[0],
-        'data' : data,
+        'image' : barcode[0].FK_UploadFile,
+        'data' : barcode[0].Data,
+        'barcode' : barcode[0].Barcode,
         'uploadform' : uploadform,
     })
     return HttpResponse(template.render(context))
