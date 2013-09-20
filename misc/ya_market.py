@@ -24,20 +24,32 @@ def ym_review(modelid):
     pageaddr = "http://market.yandex.ru/product/%s/reviews" % modelid
     g = Grab()
     g.go(pageaddr)
-    try:
-        res = g.doc.select('//div[@class="b-aura-review__verdict"]/div').text_list()
-        def make_groups(lst):
-            res = []
-            i = 2
-            while i < len(lst):
-                res.append([lst[i - 2], lst[i - 1], lst[i]])
-                i += 3
-            return res
 
-        return make_groups(res)
-        
-    except:
-        return []
+    def make_groups(lst):
+        res = []
+        i = 2
+        while i < len(lst):
+            res.append([lst[i - 2], lst[i - 1], lst[i]])
+            i += 3
+        return res
+
+    #comments = g.doc.select('//div[@class="b-aura-review__verdict"]')
+    comments = g.doc.select('//div[@class="b-aura-review b-aura-review_collapsed js-review js-review-model"]')
+    for c in comments:
+        print c.select('//div/*[class="b-aura-username"]').text_list()
+        #s = c.select('//*[@class="b-aura-username"]').text()
+        #print s
+        #print c.text()
+        #for x in c.text_list(): print x
+    #print dir(comments [0])
+    print dir(comments)
+    exit()
+    #comments = make_groups(comments)
+    names = g.doc.select('//div/*[@class="b-aura-username"]').text_list()
+    for x in names: print x
+    print len(names), len(comments)
+    #return zip(names, comments)
+    
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -47,8 +59,8 @@ if __name__ == '__main__':
         ans2 = ym_review(ans[1])
         print ans
         for x in ans2: 
-            print '>>>>'
-            for y in x:
+            print '>>>>', x[0]
+            for y in x[1]:
                 print y
         
         #print ym_search("47109370")
