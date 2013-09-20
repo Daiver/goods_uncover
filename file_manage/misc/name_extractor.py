@@ -23,7 +23,9 @@ def filter_good_name(dct):
     lst.reverse()
     max = lst[0][0]
     max_length = 6
-    return map(last, filter(lambda x: x[0] >= (max/2), lst[:max_length]))
+    avg_value = sum(map(head, lst))/len(lst)
+    #return map(last, filter(lambda x: x[0] >= (max/2), lst[:max_length]))
+    return map(last, filter(lambda x: x[0] >= avg_value, lst[:max_length]))
 
 if __name__ == '__main__':
     #data = zgoogle.google_it('4710937382310', 20)
