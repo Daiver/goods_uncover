@@ -25,31 +25,15 @@ def ym_review(modelid):
     g = Grab()
     g.go(pageaddr)
 
-    def make_groups(lst):
-        res = []
-        i = 2
-        while i < len(lst):
-            res.append([lst[i - 2], lst[i - 1], lst[i]])
-            i += 3
-        return res
-
-    #comments = g.doc.select('//div[@class="b-aura-review__verdict"]')
-    comments = g.doc.select('//div[@class="b-aura-review b-aura-review_collapsed js-review js-review-model"]')
-    for c in comments:
-        print c.select('//div/*[@class="b-aura-username"]').text_list()
-        #s = c.select('//*[@class="b-aura-username"]').text()
-        #print s
-        #print c.text()
-        #for x in c.text_list(): print x
-    #print dir(comments [0])
-    print dir(comments)
-    exit()
-    #comments = make_groups(comments)
-    names = g.doc.select('//div/*[@class="b-aura-username"]').text_list()
-    for x in names: print x
-    print len(names), len(comments)
-    #return zip(names, comments)
+    comments = g.doc.select('//div[@class="b-aura-review b-aura-review_collapsed js-review js-review-model"]/@id')
+    res = []
+    for c in comments.text_list():
+        names = g.doc.select('//div[@id="%s"]//*[@class="b-aura-username"]' % c).text_list()
+        name = names[0] if len(names) > 0 else 'Unkn'
+        ans = '\n'.join(g.doc.select('//div[@id="%s"]//*[@class="b-aura-review__verdict"]' % c).text_list())
+        res.append([name, ans])
     
+    return res
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
@@ -60,8 +44,7 @@ if __name__ == '__main__':
         print ans
         for x in ans2: 
             print '>>>>', x[0]
-            for y in x[1]:
-                print y
+            print x[1]
         
         #print ym_search("47109370")
         #print ym_search("4605922006695")
