@@ -33,7 +33,7 @@ def barcode_search(imgname):
     ans = None
     name = None
     for symbol in image:
-        #print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
+        print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
         if str(symbol.type) == 'EAN13':
             sym = symbol.data
 
