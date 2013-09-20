@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import os
-from django.utils.encoding import smart_text
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext
@@ -33,8 +32,19 @@ def addfile(request):
             f =request.FILES['File']            
             new_file = UploadFile(FileName=f.name,Owner=request.user,File=f)
             new_file.save()
-            data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
-            magic_numbers = ""
+            #data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
+            dct_data = barcode_search(STATICFILES_DIRS[0] + str(new_file.File))
+            magic_numbers = str(dct_data['sym'])
+            data = None
+            if dct_data['type'] == 'google':
+                data = ' '.join(dct_data['ans'])
+            elif dct_data['type'] == 'ya market':
+                data = ''
+                for x in dct_data['ans']:
+                    data += u'>>>\n %s\n%s' % (x[0], x[1])
+                data = data[:700]
+            else:
+                data = 'None'
             barcode = Barcode(FK_UploadFile=new_file, Data=data, Barcode=magic_numbers)
             barcode.save()
   

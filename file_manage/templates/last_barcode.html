@@ -2,9 +2,6 @@
 
 {%block application%}
 
-    <img src="/static/{{image.File}}/" width=200 />
-    {{data}}    
-    
 
 <form  name="file" enctype="multipart/form-data" action="/files/add/" method="POST">{% csrf_token %}
     <table>
@@ -17,6 +14,8 @@
     </table>
 </form>
 
+    <img src="/static/{{image.File}}/" width=200 /> <br/>
+    {{data}}    
 {%endblock%}
             
 

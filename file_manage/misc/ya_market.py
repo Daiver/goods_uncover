@@ -4,9 +4,11 @@ import grab
 
 def ym_search(q): #fix it!
     pageaddr ='http://market.yandex.ru/search.xml?text=%s' % ('+'.join(q.split()))
+    print pageaddr
     g = Grab()
     g.go(pageaddr)
     try:
+        print g.doc.select('//div').text_list()
         title = g.doc.select('//div[@class="b-offers b-offers_type_guru b-offers_type_guru_mix"]/div/h3/a').text()
         href = g.doc.select('//div[@class="b-offers b-offers_type_guru b-offers_type_guru_mix"]/div/h3/a/@href').text()
         modelid = href[href.find('modelid=') + len("modelid="):href.find('&hid')]
