@@ -1,10 +1,9 @@
 import sys
 from grab import Grab
+import grab
 
 def ym_search(q): #fix it!
-    #pageaddr ='http://google.com/search?hl=en&as_q=%s&num=%s&as_qdr=%s' % ('+'.join(q.split()), str(num),'')
     pageaddr ='http://market.yandex.ru/search.xml?text=%s' % ('+'.join(q.split()))
-    #print pageaddr
     g = Grab()
     g.go(pageaddr)
     try:
@@ -14,11 +13,6 @@ def ym_search(q): #fix it!
         return (title, modelid, 'http://market.yandex.ru' + href)
     except grab.error.DataNotFound as e:
         return ()
-    #print title
-    #print href
-
-    #hrefs = g.doc.select('//div/h3/a/@href').text_list()
-    #return zip(titles, hrefs)
 
 def ym_review(modelid):
     pageaddr = "http://market.yandex.ru/product/%s/reviews" % modelid
