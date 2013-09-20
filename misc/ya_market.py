@@ -36,7 +36,7 @@ def ym_review(modelid):
     #comments = g.doc.select('//div[@class="b-aura-review__verdict"]')
     comments = g.doc.select('//div[@class="b-aura-review b-aura-review_collapsed js-review js-review-model"]')
     for c in comments:
-        print c.select('//div/*[class="b-aura-username"]').text_list()
+        print c.select('//div/*[@class="b-aura-username"]').text_list()
         #s = c.select('//*[@class="b-aura-username"]').text()
         #print s
         #print c.text()
