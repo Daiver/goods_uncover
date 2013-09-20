@@ -1,12 +1,12 @@
 from django.conf.urls import patterns, include, url
-from goods_uncover.view import *
+from views import *
 from auth.views import * 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-                           url(r'^$',test),
+    url(r'^$', main_page),
     url(r'^registr/$', registr),
     url(r'^login/$', login),
     url(r'^logout/$', logout),

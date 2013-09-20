@@ -2,10 +2,9 @@
 # -*- coding:utf-8 -*-
 import os
 from django.utils.encoding import smart_text
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext
-from django.http import HttpResponseRedirect
 from models import UploadFile, Barcode
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
@@ -16,7 +15,7 @@ def allfiles(request):
     
     files = UploadFile.objects.all()
     #print files
-    uploadform = UploadForm(None, None)
+    uploadform = UploadForm(None)
     template = get_template("filelist.html")
     context = RequestContext(request, {
         'files' : files,
@@ -27,7 +26,7 @@ def allfiles(request):
 
 def addfile(request):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/welcome/')
+        return HttpResponseRedirect('/login/')
     if request.method == 'POST': 
         uploadform = UploadForm(request.POST or None, request.FILES or None)
         if uploadform.is_valid():
@@ -52,7 +51,7 @@ def addfile(request):
     return HttpResponseRedirect('/files/last/')
 
 def last_barcode(request):
-    uploadform = UploadForm(None)
+    uploadform = UploadForm(None,None,None)
     #last_file = UploadFile.objects.filter(Owner=request.user).order_by("-Uploaded_date")
     barcode = Barcode.objects.filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")
     template = get_template("last_barcode.html")     
@@ -68,7 +67,7 @@ def last_barcode(request):
     
 def delfile(request,file_id):
     if not request.user.is_authenticated():
-        return HttpResponseRedirect('/welcome/')
+        return HttpResponseRedirect('/login/')
         
     try:
         del_file = UploadFile.objects.get(id=file_id)   

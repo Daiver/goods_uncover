@@ -5,4 +5,4 @@ from django import forms
 from django.utils.translation import ugettext as _
 
 class UploadForm(forms.Form):
-    File = forms.ImageField(label = _(u'Файл'))
+    File = forms.ImageField(label = "", widget=forms.FileInput(attrs={'class':'btn btn-success btn-large'}),)
