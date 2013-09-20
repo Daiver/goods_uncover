@@ -37,13 +37,13 @@ def barcode_search(imgname):
         if str(symbol.type) == 'EAN13':
             sym = symbol.data
 
-    if None == sym: return []
-    ya_ans = ya_market.ym_search(sym)
-    if len(ya_ans) == 0:
-        ans = google_barcode_search(sym)
-        tp = 'google'
-    else:
-        ans = ya_market.ym_review(ya_ans[1])
+    if None != sym: 
+        ya_ans = ya_market.ym_search(sym)
+        if len(ya_ans) == 0:
+            ans = google_barcode_search(sym)
+            tp = 'google'
+        else:
+            ans = ya_market.ym_review(ya_ans[1])
     return {
             'sym' : sym,
             'type' : tp,
