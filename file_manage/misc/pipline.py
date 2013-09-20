@@ -44,6 +44,7 @@ def barcode_search(imgname):
             tp = 'google'
         else:
             ans = ya_market.ym_review(ya_ans[1])
+            tp = 'ya market'
     return {
             'sym' : sym,
             'type' : tp,
