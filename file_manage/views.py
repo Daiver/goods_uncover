@@ -29,7 +29,7 @@ def addfile(request):
     if request.method == 'POST': 
         uploadform = UploadForm(request.POST or None, request.FILES or None)
         if uploadform.is_valid():
-            f =request.FILES['File']            
+            f =request.FILES['FileResiz']            
             new_file = UploadFile(FileName=f.name,Owner=request.user,File=f)
             new_file.save()
             #data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))

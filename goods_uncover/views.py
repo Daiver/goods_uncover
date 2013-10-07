@@ -16,7 +16,7 @@ def main_page(request):
 
 def test(request):
     print "test"
-    template = get_template("main.html")
+    template = get_template("test.html")
     context = RequestContext(request, {
     })
     return HttpResponse(template.render(context))

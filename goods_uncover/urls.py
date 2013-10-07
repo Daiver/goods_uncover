@@ -10,6 +10,7 @@ urlpatterns = patterns('',
     url(r'^registr/$', registr),
     url(r'^login/$', login),
     url(r'^logout/$', logout),
+    url(r'^test/$', test),
 
 
      url(r'^files/',include('file_manage.urls')),
