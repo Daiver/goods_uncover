@@ -15,7 +15,7 @@ def allfiles(request):
     files = UploadFile.objects.all()
     #print files
     uploadform = UploadForm(None)
-    template = get_template("filelist.html")
+    template = get_template("main.html")
     context = RequestContext(request, {
         'files' : files,
         'uploadform' : uploadform,
@@ -29,7 +29,7 @@ def addfile(request):
     if request.method == 'POST': 
         uploadform = UploadForm(request.POST or None, request.FILES or None)
         if uploadform.is_valid():
-            f =request.FILES['FileResiz']            
+            f =request.FILES['File']            
             new_file = UploadFile(FileName=f.name,Owner=request.user,File=f)
             new_file.save()
             #data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
@@ -58,13 +58,13 @@ def addfile(request):
  #   context = RequestContext(request, {
  #       'data' : data,
     #})
-    return HttpResponseRedirect('/files/last/')
+    return HttpResponseRedirect('/')
 
 def last_barcode(request):
     uploadform = UploadForm(None,None,None)
     #last_file = UploadFile.objects.filter(Owner=request.user).order_by("-Uploaded_date")
     barcode = Barcode.objects.filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")
-    template = get_template("last_barcode.html")     
+    template = get_template("main.html")     
     context = RequestContext(request, {
         'image' : barcode[0].FK_UploadFile,
         'data' : barcode[0].Data,
@@ -72,8 +72,6 @@ def last_barcode(request):
         'uploadform' : uploadform,
     })
     return HttpResponse(template.render(context))
-
-    return 
     
 def delfile(request,file_id):
     if not request.user.is_authenticated():

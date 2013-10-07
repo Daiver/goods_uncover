@@ -1,22 +1,3 @@
-{%extends "main.html"%}
-
-{%block application%}
-
-
-            <form  name="file" id="form" enctype="multipart/form-data" action="/files/add/" method="POST">{% csrf_token %}
-                <table>
-                
-                {{uploadform.as_table}}
-                              
-                <tr>
-                	<td colspan="2" align="center">
-                		<input class="btn btn-success btn-block" type="submit" value="Загрузить"><br>
-                	</td>
-                </tr>
-                </table>
-            </form>
-
-
              {%for file in files%}
                 <div class="file_block" id="{{file.id}}">
                     <br><li>{{file.FileName}} {{file.Uploaded_date}} <a href="/static/{{file.File}}/">Скачать</a> <a href="/files/del/{{file.id}}/">Удалить</a></li><br>
@@ -86,7 +67,7 @@
                     var resized = resize(img);                                   
                     input.files[0] = ""; // put result from canvas into new hidden input
                     //document.getElementById('form').appendChild(newinput);               
-                    alert("ddd");        
+                    //alert("ddd");        
                }                 
                 
             }
@@ -101,5 +82,3 @@
 </script>
 
 
-
-{%endblock%}
