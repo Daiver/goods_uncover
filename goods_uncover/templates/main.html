@@ -97,6 +97,18 @@
         }
         
 
+    div, button {clear:both;}
+     .pass:before {
+          content: 'PASS: ';
+          color:  blue;
+          font-weight: bold;
+      }
+
+      .fail:before {
+          content: 'FAIL: ';
+          color: red;
+          font-weight: bold;
+      }
 
         </style>
     </head>
@@ -133,11 +145,11 @@
         <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
         
     
-<div align="center" class="tabbable"> <!-- Only required for left/right tabs -->
+<div class="tabbable"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs" id="myTab" >
-        <li class="active"><a id=1 href="#desc" data-toggle="tab">Поиск</a></li>
-        <li><a id=2 href="#files" data-toggle="tab">Результаты</a></li>        
-        <li ><a id=3 href="#mess" data-toggle="tab">История</a></li>
+        <li class="active"><a id=1 href="#desc" data-toggle="tab"><i class="icon-search"></i>Поиск</a></li>
+        <li><a id=2 href="#files" data-toggle="tab"><i class="icon-list"></i>Результаты</a></li>        
+        <li ><a id=3 href="#mess" data-toggle="tab"><i class="icon-user"></i>Комментарии</a></li>
       </ul>
       <div class="tab-content">
         
@@ -146,12 +158,47 @@
         </div>
         
         <div class="tab-pane" id="files">
-             <img src="/static/{{image.File}}/" width=400 /> <br/>
-                {{data}}    
+
+            <div class="span2">  
+             <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li><a href="#">Yandex mareket</a></li>
+                      <li><a href="#">Другой сервис</a></li>
+                      <li><a href="#">Другой сервис</a></li>
+                      <li><a href="#">Другой сервис</a></li>                      
+                </ul>
+              </div><!--/.well -->
+            </div>
+
+            <div class="span7">              
+                <h4>Штрих-код:</h4> 4710937382310 </br>            
+                <h4>Название:</h4> HTC One S</br>
+                <h4>Описание:</h4> смартфон производство: хохляндия </br>
+                 <!--<img src="/static/{{image.File}}/" width=400 /> <br/>-->
+            </div>        
         </div>        
 
-        <div class="tab-pane" id="mess" >
-            {%include "filelist.html" with files=files%}           
+        <div  class="tab-pane" id="mess" >
+
+            <div class="span2">  
+             <div class="well sidebar-nav">
+                <ul class="nav nav-list">
+                    <li><a href="#">Yandex mareket</a></li>
+                      <li><a href="#">Другой сервис</a></li>
+                      <li><a href="#">Другой сервис</a></li>
+                      <li><a href="#">Другой сервис</a></li>                      
+                </ul>
+              </div><!--/.well -->
+            </div>
+
+            <div class="span7">              
+
+                <b>Имя:</b> Иван <br>
+                <b>Текст:</b> Кул смартфон. Рекомендую <br><br>
+    
+                <b>Имя:</b> Марья <br>
+                <b>Текст:</b> Хороший экран. В отличии от бла-бла-бла-фона.<br>   
+            </div>       
         </div>
       </div>
  </div>

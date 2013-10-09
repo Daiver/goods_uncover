@@ -21,8 +21,8 @@ def main_page(request):
 #    return HttpResponse(template.render(context))
     
     files = UploadFile.objects.all()
-    barcode = Barcode.objects.filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")
-
+    barcode = Barcode.objects.all()#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
+    
     uploadform = UploadForm(None)
     template = get_template("main.html")
     context = RequestContext(request, {

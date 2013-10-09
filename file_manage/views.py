@@ -24,8 +24,8 @@ def allfiles(request):
 
 
 def addfile(request):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect('/login/')
+    #if not request.user.is_authenticated():
+     #   return HttpResponseRedirect('/login/')
     if request.method == 'POST': 
         uploadform = UploadForm(request.POST or None, request.FILES or None)
         if uploadform.is_valid():
@@ -74,8 +74,8 @@ def last_barcode(request):
     return HttpResponse(template.render(context))
     
 def delfile(request,file_id):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect('/login/')
+    #if not request.user.is_authenticated():
+     #   return HttpResponseRedirect('/login/')
         
     try:
         del_file = UploadFile.objects.get(id=file_id)   

@@ -1,7 +1,11 @@
+<script type="text/javascript" src="/static/scripts/get_barcode_from_img.js"></script>
 
 <form align="center" name="file" enctype="multipart/form-data" action="/files/add/" method="POST">{% csrf_token %}
     <table>
     {{uploadform.File}} </br></br>
+
+   <h2>ИЛИ</h2> <br>
+
     {{uploadform.barcode.label}} {{uploadform.barcode}}</br></br>
   
     <input class="btn btn-success btn-large" type="submit" value="Искать"><br>
@@ -13,8 +17,48 @@
     </table>
 </form>
 
+<ul id="output">hf</ul>
+    <img id="barcode1" src="/static/uploads/alex/7.jpg"/>     
+    <img id="barcode2" src="/static/uploads/alex/11.png"/>     
 
 
+
+<script>
+      
+      function combine(attempts) {
+        var returnable = attempts[0].split(''),
+            latestAttempt,
+            i, j;
+        for (i = 0; i<attempts.length; i++) {
+          latestAttempt = attempts[i].split('');
+          for (j = 0; j<returnable.length; j++) {
+            if (returnable[j] == 'X' && latestAttempt[j] != 'X') {
+              returnable[j] = latestAttempt[j];
+            }
+          }
+        }
+        return returnable.join('');
+      }
+
+      function repeatTest(barcode_id) {
+        var attempts = [], forcedWidth = 320;
+        attempts[attempts.length] = getBarcodeFromImage(barcode_id);
+        while(attempts[attempts.length-1] && attempts[attempts.length-1].indexOf('X') >= 0 && forcedWidth < 4200) {
+          attempts[attempts.length] = getBarcodeFromImage(barcode_id, forcedWidth);
+          forcedWidth += 120;
+        }
+        return combine(attempts);
+      }
+
+      function testBarcode(barcode_id) {
+        var barcodeImg = document.getElementById(barcode_id);
+            detectedBarCode = repeatTest(barcode_id);
+            alert(detectedBarCode);
+      }
+
+
+</script>
    
-            
+       
+ <button onclick="testBarcode('barcode1')">Scan</button>
 
