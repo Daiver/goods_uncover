@@ -17,14 +17,13 @@
     </table>
 </form>
 
-<ul id="output">hf</ul>
-    <img id="barcode1" src="/static/uploads/alex/7.jpg"/>     
-    <img id="barcode2" src="/static/uploads/alex/11.png"/>     
 
-
+<output id="list"></output>
 
 <script>
-      
+   
+
+
       function combine(attempts) {
         var returnable = attempts[0].split(''),
             latestAttempt,
@@ -40,25 +39,47 @@
         return returnable.join('');
       }
 
-      function repeatTest(barcode_id) {
-        var attempts = [], forcedWidth = 320;
-        attempts[attempts.length] = getBarcodeFromImage(barcode_id);
-        while(attempts[attempts.length-1] && attempts[attempts.length-1].indexOf('X') >= 0 && forcedWidth < 4200) {
-          attempts[attempts.length] = getBarcodeFromImage(barcode_id, forcedWidth);
-          forcedWidth += 120;
+         function repeatTest(barcode_id) {
+            var attempts = [], forcedWidth = 320;
+            attempts[attempts.length] = getBarcodeFromImage(barcode_id);
+            while(attempts[attempts.length-1] && attempts[attempts.length-1].indexOf('X') >= 0 && forcedWidth < 4200) {
+              attempts[attempts.length] = getBarcodeFromImage(barcode_id, forcedWidth);
+              forcedWidth += 120;
+            }
+            return combine(attempts);
+         }
+        
+         function testBarcode(imgOrId) {
+            var barcodeImg = "object" == typeof imgOrId ? imgOrId : document.getElementById(imgOrId);                        
+            detectedBarCode = repeatTest(barcodeImg);
+            return detectedBarCode;
+          }
+
+        function fileSelected(input) {
+         if (input.files && input.files[0]) {        
+            var reader = new FileReader();            
+            reader.onload = function (e) {
+                var img = new Image();
+                img.src = e.target.result;                                  
+                if(document.getElementById("barcode_img")){
+                  document.getElementById("barcode_img").remove();                 
+                } 
+                var span = document.createElement('span');                
+                span.innerHTML = ['<img id="barcode_img" src="', e.target.result,'" title="', escape(input.files[0].name), '"/>'].join('');                
+                document.getElementById('list').insertBefore(span, null);                
+                var txt = testBarcode('barcode_img');
+                //alert("trololo");
+                alert(txt);                
+                                 
+            }
+            
+            reader.readAsDataURL(input.files[0]);
         }
-        return combine(attempts);
-      }
-
-      function testBarcode(barcode_id) {
-        var barcodeImg = document.getElementById(barcode_id);
-            detectedBarCode = repeatTest(barcode_id);
-            alert(detectedBarCode);
-      }
-
+        
+    }
 
 </script>
    
        
- <button onclick="testBarcode('barcode1')">Scan</button>
+ <button onclick="alert(testBarcode('barcode2'))">Scan</button>
 
