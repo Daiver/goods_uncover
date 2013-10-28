@@ -10,6 +10,7 @@ from file_manage.forms import UploadForm
 from django.contrib import messages
 
 
+
 def main_page(request):
     
     #if request.user.is_authenticated():
@@ -19,18 +20,18 @@ def main_page(request):
 #    context = RequestContext(request, {
 #    })
 #    return HttpResponse(template.render(context))
-    
-    files = UploadFile.objects.all()
-    barcode = Barcode.objects.all()#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
+    barcode = Barcode.objects.all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
+    if barcode:
+        barcode = barcode[0]
+    else:
+        barcode = Barcode()
     
     uploadform = UploadForm(None)
     template = get_template("main.html")
     context = RequestContext(request, {
-        'files' : files,
         'uploadform' : uploadform,
-        'image' : barcode[0].FK_UploadFile,
-        'data' : barcode[0].Data,
-        'barcode' : barcode[0].Barcode,
+        'data' : barcode.Data,
+        'barcode' : barcode.Barcode,
     })
     return HttpResponse(template.render(context))
 

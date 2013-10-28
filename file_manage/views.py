@@ -30,10 +30,14 @@ def addfile(request):
         uploadform = UploadForm(request.POST or None, request.FILES or None)
         if uploadform.is_valid():
             f =request.FILES['File']            
-            new_file = UploadFile(FileName=f.name,Owner=request.user,File=f)
+            
+            new_file = UploadFile(FileName=f.name,File=f)
             new_file.save()
+
             #data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
+
             dct_data = barcode_search(STATICFILES_DIRS[0] + str(new_file.File))
+            os.remove(STATICFILES_DIRS[0] + str(new_file.File))            
             magic_numbers = str(dct_data['sym'])
             data = None
             if dct_data['type'] == 'google':
@@ -45,7 +49,7 @@ def addfile(request):
                 data = data[:700]
             else:
                 data = 'None'
-            barcode = Barcode(FK_UploadFile=new_file, Data=data, Barcode=magic_numbers)
+            barcode = Barcode(FK_Owner=request.user, Data=data, Barcode=magic_numbers)
             barcode.save()
   
         else:
@@ -60,6 +64,7 @@ def addfile(request):
     #})
     return HttpResponseRedirect('/')
 
+
 def last_barcode(request):
     uploadform = UploadForm(None,None,None)
     #last_file = UploadFile.objects.filter(Owner=request.user).order_by("-Uploaded_date")
@@ -73,6 +78,7 @@ def last_barcode(request):
     })
     return HttpResponse(template.render(context))
     
+'''    
 def delfile(request,file_id):
     #if not request.user.is_authenticated():
      #   return HttpResponseRedirect('/login/')
@@ -94,3 +100,4 @@ def delfile(request,file_id):
 
             
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+'''

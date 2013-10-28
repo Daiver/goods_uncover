@@ -144,7 +144,17 @@
     
         <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
         
-    
+
+{%block application%}
+<div align="right" id="auth">
+    {% if not user.is_authenticated %}
+        <a href="/login/">SignIn</a>
+    {%else%}
+        <a href="/logout/">Logout</a>
+    {%endif%}
+</div>    
+
+
 <div class="tabbable"> <!-- Only required for left/right tabs -->
       <ul class="nav nav-tabs" id="myTab" >
         <li class="active"><a id=1 href="#desc" data-toggle="tab"><i class="icon-search"></i>Поиск</a></li>
@@ -171,9 +181,9 @@
             </div>
 
             <div class="span7">              
-                <h4>Штрих-код:</h4> 4710937382310 </br>            
+                <h4>Штрих-код:</h4> {{barcode}} </br>            
                 <h4>Название:</h4> HTC One S</br>
-                <h4>Описание:</h4> смартфон производство: хохляндия </br>
+                <h4>Описание:</h4> {{data}} </br>
                  <!--<img src="/static/{{image.File}}/" width=400 /> <br/>-->
             </div>        
         </div>        
@@ -203,7 +213,7 @@
       </div>
  </div>
     
-
+{%endblock%}
 
 
 </div><!--wrap-->
