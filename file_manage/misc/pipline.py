@@ -32,6 +32,7 @@ def barcode_search(imgname):
     tp = None
     ans = None
     name = None
+    desc = None
     for symbol in image:
         #print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
         if str(symbol.type) == 'EAN13':
@@ -44,17 +45,20 @@ def barcode_search(imgname):
             tp = 'google'
         else:
             ans = ya_market.ym_review(ya_ans[1])
+            desc = ya_ans
             tp = 'ya market'
     return {
             'sym' : sym,
             'type' : tp,
             'name' : name,
+            'desc' : desc,
             'ans' : ans
         }
 
     
 if __name__ == '__main__':
     ans = barcode_search(argv[1])
+    print 'sym', ans['sym']
     for x in ans:
         try:
             print ans[x]
