@@ -13,18 +13,18 @@ from django.contrib import messages
 
 def main_page(request):
     
-    #if request.user.is_authenticated():
-    #    return HttpResponseRedirect('/files/all/')
-    #print "222"        
-#    template = get_template("main.html")
-#    context = RequestContext(request, {
-#    })
-#    return HttpResponse(template.render(context))
     barcode = Barcode.objects.all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
     if barcode:
         barcode = barcode[0]
     else:
         barcode = Barcode()
+    active = ["active",""]
+    if request.session.get('find', False):
+        if request.session["find"]:
+            active = []
+            active.append("")
+            active.append("active")
+            
     
     comments = Comments.objects.filter(FK_Barcode=barcode)
     uploadform = UploadForm(None)
@@ -34,8 +34,10 @@ def main_page(request):
         'title' : barcode.Title,
         'comments': comments,
         'barcode' : barcode.Barcode,
+        'active': active,
     })
     return HttpResponse(template.render(context))
+
 
 
 

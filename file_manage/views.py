@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 import os
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render_to_response
 from django.template.loader import get_template
 from django.template import RequestContext
 from models import UploadFile, Barcode, Comments
@@ -62,11 +63,14 @@ def addfile(request):
             else:
                 data = 'None'
             
-  
+            request.session["find"]=True            
+            
         else:
+            request.session["find"]=False
             messages.error(request, "Это не изображение")
             return HttpResponseRedirect(request.META['HTTP_REFERER'])            
     else:
+        request.session["find"]=False
         uploadform = UploadForm(None, None)
 #    data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
  #   template = get_template("main.html")     
@@ -74,7 +78,7 @@ def addfile(request):
  #       'data' : data,
     #})
     return HttpResponseRedirect('/')
-
+    #return render_to_response("main.html",context_instance=RequestContext(request))
 
 def last_barcode(request):
     uploadform = UploadForm(None,None,None)
