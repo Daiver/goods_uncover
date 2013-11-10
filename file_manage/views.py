@@ -4,7 +4,7 @@ import os
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext
-from models import UploadFile, Barcode
+from models import UploadFile, Barcode, Comments
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
 from django.contrib import messages
@@ -38,19 +38,30 @@ def addfile(request):
 
             dct_data = barcode_search(STATICFILES_DIRS[0] + str(new_file.File))
             os.remove(STATICFILES_DIRS[0] + str(new_file.File))            
+            
             magic_numbers = str(dct_data['sym'])
+            if request.user.is_authenticated():
+                us=request.user
+            else:
+                us=None
+            
+            barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['desc'][0],Description="")
+            barcode.save()
+            
             data = None
             if dct_data['type'] == 'google':
                 data = ' '.join(dct_data['ans'])
             elif dct_data['type'] == 'ya market':
                 data = ''
                 for x in dct_data['ans']:
-                    data += u'>>>\n %s\n%s' % (x[0], x[1])
-                data = data[:700]
+                    comments = Comments(FK_Barcode=barcode,Author=x[0],Text=x[1])
+                    comments.save()
+                    
+                    #data += u'>>>\n %s\n%s' % (x[0], x[1])
+                #data = data[:700]
             else:
                 data = 'None'
-            barcode = Barcode(FK_Owner=request.user, Data=data, Barcode=magic_numbers)
-            barcode.save()
+            
   
         else:
             messages.error(request, "Это не изображение")

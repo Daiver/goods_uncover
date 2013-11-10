@@ -182,7 +182,7 @@
 
             <div class="span7">              
                 <h4>Штрих-код:</h4> {{barcode}} </br>            
-                <h4>Название:</h4> HTC One S</br>
+                <h4>Название:</h4> {{title}}</br>
                 <h4>Описание:</h4> {{data}} </br>
                  <!--<img src="/static/{{image.File}}/" width=400 /> <br/>-->
             </div>        
@@ -202,12 +202,11 @@
             </div>
 
             <div class="span7">              
-
-                <b>Имя:</b> Иван <br>
-                <b>Текст:</b> Кул смартфон. Рекомендую <br><br>
-    
-                <b>Имя:</b> Марья <br>
-                <b>Текст:</b> Хороший экран. В отличии от бла-бла-бла-фона.<br>   
+                {%for com in comments%}
+                <b>Имя:</b> {{com.Author}} <br>
+                <b>Текст:</b> {{com.Text|linebreaksbr}} <br><br>
+                {%endfor%}
+                
             </div>       
         </div>
       </div>

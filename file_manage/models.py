@@ -14,6 +14,13 @@ class UploadFile(models.Model):
     Uploaded_date = models.DateTimeField(auto_now_add=True)
 
 class Barcode(models.Model):
-    FK_Owner = models.ForeignKey(User)
+    FK_Owner = models.ForeignKey(User,null=True)
     Barcode = models.CharField(max_length=16)
-    Data = models.TextField(max_length=1000)
+    Title = models.CharField(max_length=100)
+    Description = models.TextField(max_length=1000)
+    #Data = models.TextField(max_length=1000)
+    
+class Comments(models.Model):
+    Author = models.CharField(max_length=100)
+    Text = models.TextField(max_length=1000)
+    FK_Barcode = models.ForeignKey(Barcode)
