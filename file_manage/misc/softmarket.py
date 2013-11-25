@@ -26,8 +26,9 @@ def sf_reviews(href):
     reviews = g.doc.select('//div[@class="b-responds"]')
     reviews_auth = g.doc.select('//div[@class="b-responds"]/div/div/div[@class="b-responds-col side_left"]/div[@class="b-responds-author g-ui margin_075"]/b')
     reviews_text = g.doc.select('//div[@class="b-responds"]/div/div/div[@class="b-responds-col side_right"]/div')
-    print reviews_auth.text_list(), len(reviews_auth.text_list())
-    print reviews_text.text_list(), len(reviews_text.text_list())
+    return zip(reviews_auth.text_list(), reviews_text.text_list())
+    #print reviews_auth.text_list(), len(reviews_auth.text_list())
+    #print reviews_text.text_list(), len(reviews_text.text_list())
     # b-responds-author
     
 
