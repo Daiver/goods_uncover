@@ -33,7 +33,7 @@ def ym_description(modelid):
     pageaddr = "http://market.yandex.ru/model-spec.xml?modelid=%s" % modelid
     g = Grab()
     g.go(pageaddr)
-    desc = g.doc.select('//table[@class="b-properties"]/tbody')
+    desc = g.doc.select('//table[@class="b-properties"]/tbody/tr')
     s = '|||'.join(x for x in desc.text_list())
     print len(desc.text_list())    
     return s
@@ -46,6 +46,7 @@ if __name__ == '__main__':
         ans = ym_search("4710937382310")
         print ans
         print ym_description(ans[1])
+
         #ans2 = ym_review(ans[1])
         #print ans
         #for x in ans2: 
