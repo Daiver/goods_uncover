@@ -12,10 +12,12 @@ from django.contrib import messages
 
 
 def main_page(request, barcode):
-    
+    descr = None
     barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
     if barcode:
         barcode = barcode[0]
+        descr = barcode.Description.split('|||')    
+
     else:
         barcode = Barcode()
     active = ["active",""]
@@ -37,6 +39,7 @@ def main_page(request, barcode):
         'title' : barcode.Title,
         'comments': comments,
         'barcode' : barcode.Barcode,
+        'data': descr,
         'active': active,
     })
     return HttpResponse(template.render(context))

@@ -18,12 +18,13 @@
 </div>
 
 <output id="list"></output>
-
+<script src="http://jsconsole.com/remote.js?64B96EE9-C70D-4A8A-BE36-1BCE42A24DC6"></script>
 <script>
    
 
 
       function combine(attempts) {
+        alert(attempts.length);        
         var returnable = attempts[0].split(''),
             latestAttempt,
             i, j;
@@ -67,7 +68,7 @@
                 span.innerHTML = ['<img id="barcode_img" src="', e.target.result,'" title="', escape(input.files[0].name), '"/>'].join('');                
                 document.getElementById('list').insertBefore(span, null);                
                 var txt = testBarcode('barcode_img');
-                //alert("trololo");
+                alert("trololo");
                 alert(txt);                
                                  
             }

@@ -34,7 +34,9 @@ def ym_description(modelid):
     g = Grab()
     g.go(pageaddr)
     desc = g.doc.select('//table[@class="b-properties"]/tbody/tr')
-    return desc.text_list()
+    s = '|||'.join(x for x in desc.text_list())
+    print len(desc.text_list())    
+    return s
 
     # b-properties
 if __name__ == '__main__':
@@ -43,8 +45,8 @@ if __name__ == '__main__':
     else:
         ans = ym_search("4710937382310")
         print ans
-        tmp = ym_description(ans[1])
-        print tmp, len(tmp)
+        print ym_description(ans[1])
+
         #ans2 = ym_review(ans[1])
         #print ans
         #for x in ans2: 
