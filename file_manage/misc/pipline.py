@@ -45,6 +45,7 @@ def barcode_search(sym):
             tp = 'google'
         else:
             ans = ya_market.ym_review(ya_ans[1])
+            name = ya_ans[0]
             tp = 'ya market'
     return {
             'sym' : sym,
