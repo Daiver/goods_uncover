@@ -51,7 +51,8 @@ def barcode_search(sym):
             'sym' : sym,
             'type' : tp,
             'name' : name,
-            'ans' : ans
+            'ans' : ans,
+            'modelId' : ya_ans[1]
         }
 
     

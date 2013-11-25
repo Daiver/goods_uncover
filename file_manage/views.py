@@ -50,15 +50,13 @@ def addfile(request):
                 sym = uploadform.cleaned_data.get('barcode',0)
                 barcode = Barcode.objects.filter(Barcode=sym)
             if not barcode:
-                dct_data = barcode_search(sym)
-                print dct_data['ans']                
+                dct_data = barcode_search(sym)                
                 magic_numbers = str(dct_data['sym'])
                 if request.user.is_authenticated():
                     us=request.user
                 else:
                     us=None
-                descr = ya_market.ym_description(magic_numbers)
-                print descr
+                descr = ya_market.ym_description(dct_data['modelId'])
                 barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'],Description=descr)
                 barcode.save()
                 

@@ -182,7 +182,10 @@
                              <div class="span9 offset2">             
                                 <h4>Штрих-код:</h4> {{barcode}} </br>            
                                 <h4>Название:</h4> {{title}}</br>
-                                <h4>Описание:</h4> {{data}} </br> 
+                                <h4>Описание:</h4> {%for d in data%}
+                                                        {{d}}<br>
+                                                    {%endfor%}                                                                    
+                                 </br> 
                             </div> 
                         </div>
                         </div> <!--tab-pane-->        
