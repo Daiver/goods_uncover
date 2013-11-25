@@ -3,8 +3,7 @@ from grab import Grab
 import grab
 
 def sf_search(name):
-    def head_or_none(l):
-        return None if len(l) == 0 else l[0]
+    def head_or_none(l): return None if len(l) == 0 else l[0]
     name = name.replace(' ', '+')
     # l-catalog-item
     pageaddr = "http://www.sotmarket.ru/search/?ref=7&q=%s" % name
@@ -17,11 +16,12 @@ def sf_search(name):
     href = g.doc.select('//li[@class="l-catalog-item"]/div/div[@class="b-catalog_goods-link"]/a/@href').text_list()
 
     return map(head_or_none, [items, price, href])
-    '''for x in items.text_list():
-        try:
-            print x
-        except:
-            pass'''
+
+def sf_reviews(href):
+    href = 'http://www.sotmarket.ru%s#tab=opinions' % href
+    print href
 
 if __name__ == '__main__':
-    print sf_search('htc one s')
+    res = sf_search('htc one s')
+    print res
+    print sf_reviews(res[2])
