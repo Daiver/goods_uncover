@@ -39,6 +39,7 @@ def addfile(request):
                 new_file = UploadFile(FileName=f.name,File=f)
                 new_file.save()
                 sym = b_d(STATICFILES_DIRS[0] + str(new_file.File))                
+                os.remove(STATICFILES_DIRS[0] + str(new_file.File))                
                 barcode = Barcode.objects.filter(Barcode=sym)
                 if not barcode:
                     dct_data = barcode_search(sym)
@@ -56,15 +57,17 @@ def addfile(request):
                     us=request.user
                 else:
                     us=None
-                descr = ya_market.ym_description(dct_data['modelId'])
-                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'],Description=descr)
-                barcode.save()
                 
+                #fix this
+                descr = ya_market.ym_description(dct_data['modelId'][1])
+                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'],Description=descr)                
+                barcode.save()
+
                 data = None
                 if dct_data['type'] == 'google':
                     data = ' '.join(dct_data['ans'])
                 elif dct_data['type'] == 'ya market':
-                    data = ''
+                    data = ''                                    
                     for x in dct_data['ans']:
                         comments = Comments(FK_Barcode=barcode,Author=x[0],Text=x[1])
                         comments.save()

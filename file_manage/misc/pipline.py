@@ -38,6 +38,7 @@ def barcode_search(sym):
     tp = None
     ans = None
     name = None
+    #ya_ans = None
     if None != sym: 
         ya_ans = ya_market.ym_search(sym)
         if len(ya_ans) == 0:
@@ -52,7 +53,7 @@ def barcode_search(sym):
             'type' : tp,
             'name' : name,
             'ans' : ans,
-            'modelId' : ya_ans[1]
+            'modelId' : ya_ans
         }
 
     
