@@ -34,23 +34,10 @@ def b_d(imgname):
             sym = symbol.data
     return sym
 
-def barcode_search(imgname):
-    scanner = zbar.ImageScanner()
-    scanner.parse_config('enable')
-    pil = Image.open(imgname).convert('L')
-    width, height = pil.size
-    raw = pil.tostring()
-    image = zbar.Image(width, height, 'Y800', raw)
-    scanner.scan(image)
-    sym = None
+def barcode_search(sym):
     tp = None
     ans = None
     name = None
-    for symbol in image:
-        #print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
-        if str(symbol.type) == 'EAN13':
-            sym = symbol.data
-
     if None != sym: 
         ya_ans = ya_market.ym_search(sym)
         if len(ya_ans) == 0:

@@ -29,6 +29,7 @@ def addfile(request):
     #if not request.user.is_authenticated():
      #   return HttpResponseRedirect('/login/')
     barcode = 0
+    dct_data = None
     if request.method == 'POST': 
         uploadform = UploadForm(request.POST, request.FILES)
         if uploadform.is_valid() and (request.FILES.get('File',False) or uploadform.cleaned_data.get('barcode',False)):
@@ -38,43 +39,27 @@ def addfile(request):
                 new_file = UploadFile(FileName=f.name,File=f)
                 new_file.save()
                 sym = b_d(STATICFILES_DIRS[0] + str(new_file.File))                
-                if not sym:
-                    dct_data = barcode_search(STATICFILES_DIRS[0] + str(new_file.File))
-                    sym = str(dct_data['sym'])
-                    os.remove(STATICFILES_DIRS[0] + str(new_file.File))    
-                
                 barcode = Barcode.objects.filter(Barcode=sym)
-                print barcode
+                if not barcode:
+                    dct_data = barcode_search(sym)
+                    sym = str(dct_data['sym'])
+                    
+                
             elif uploadform.cleaned_data.get('barcode',False):
                  
-                tp = None
-                ans = None
-                name = None
-                desc = None                
                 sym = uploadform.cleaned_data.get('barcode',0)
                 barcode = Barcode.objects.filter(Barcode=sym)
-                if not barcode:                
-                    if None != sym: 
-                        ya_ans = ya_market.ym_search(sym)
-                        if len(ya_ans) == 0:
-                            ans = google_barcode_search(sym)
-                            tp = 'google'
-                        else:
-                            ans = ya_market.ym_review(ya_ans[1])
-                            desc = ya_ans
-                            tp = 'ya market'
-                    dct_data = {'sym' : sym,
-                            'type' : tp,
-                            'name' : name,
-                            'desc' : desc,
-                            'ans' : ans }
             if not barcode:
+                dct_data = barcode_search(sym)
+                print dct_data['ans']                
                 magic_numbers = str(dct_data['sym'])
                 if request.user.is_authenticated():
                     us=request.user
                 else:
                     us=None
-                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['desc'][0],Description="")
+                descr = ya_market.ym_description(magic_numbers)
+                print descr
+                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'],Description=descr)
                 barcode.save()
                 
                 data = None

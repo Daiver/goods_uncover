@@ -37,6 +37,7 @@ def main_page(request, barcode):
         'title' : barcode.Title,
         'comments': comments,
         'barcode' : barcode.Barcode,
+        'data': barcode.Description,
         'active': active,
     })
     return HttpResponse(template.render(context))

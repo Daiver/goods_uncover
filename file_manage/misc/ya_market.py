@@ -34,7 +34,9 @@ def ym_description(modelid):
     g = Grab()
     g.go(pageaddr)
     desc = g.doc.select('//table[@class="b-properties"]/tbody')
-    return desc.text_list()
+    lst = desc.text_list()
+    s = '\n'.join(x for x in lst)    
+    return s
 
     # b-properties
 if __name__ == '__main__':
