@@ -19,6 +19,20 @@ def google_barcode_search(sym):
 
     return name_extractor.filter_good_name(dct)
 
+def b_d(imgname):
+    scanner = zbar.ImageScanner()
+    scanner.parse_config('enable')
+    pil = Image.open(imgname).convert('L')
+    width, height = pil.size
+    raw = pil.tostring()
+    image = zbar.Image(width, height, 'Y800', raw)
+    scanner.scan(image)
+    sym = None
+    for symbol in image:
+        #print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
+        if str(symbol.type) == 'EAN13':
+            sym = symbol.data
+    return sym
 
 def barcode_search(imgname):
     scanner = zbar.ImageScanner()

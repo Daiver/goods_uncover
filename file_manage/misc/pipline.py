@@ -12,13 +12,27 @@ def google_barcode_search(sym):
     data = zgoogle.google_it(u'%s' % sym, 20)
     text = reduce(lambda x, y: x + y, map(name_extractor.normalize_text, map(lambda x: x[0] + ' ' + x[1], data)))
     dct = name_extractor.get_freq_dict(text)
-    #lst = [(dct[x], x) for x in dct]
-    #lst.sort()
-    #for x in lst:
-    #    print x[0], x[1]
+    lst = [(dct[x], x) for x in dct]
+    lst.sort()
+    for x in lst:
+        print x[0], x[1]
 
     return name_extractor.filter_good_name(dct)
 
+def b_d(imgname):
+    scanner = zbar.ImageScanner()
+    scanner.parse_config('enable')
+    pil = Image.open(imgname).convert('L')
+    width, height = pil.size
+    raw = pil.tostring()
+    image = zbar.Image(width, height, 'Y800', raw)
+    scanner.scan(image)
+    sym = None
+    for symbol in image:
+        #print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
+        if str(symbol.type) == 'EAN13':
+            sym = symbol.data
+    return sym
 
 def barcode_search(imgname):
     scanner = zbar.ImageScanner()
@@ -32,7 +46,6 @@ def barcode_search(imgname):
     tp = None
     ans = None
     name = None
-    desc = None
     for symbol in image:
         #print 'decoded', symbol.type, 'symbol', '"%s"' % symbol.data
         if str(symbol.type) == 'EAN13':
@@ -45,20 +58,17 @@ def barcode_search(imgname):
             tp = 'google'
         else:
             ans = ya_market.ym_review(ya_ans[1])
-            desc = ya_ans
             tp = 'ya market'
     return {
             'sym' : sym,
             'type' : tp,
             'name' : name,
-            'desc' : desc,
             'ans' : ans
         }
 
     
 if __name__ == '__main__':
     ans = barcode_search(argv[1])
-    print 'sym', ans['sym']
     for x in ans:
         try:
             print ans[x]

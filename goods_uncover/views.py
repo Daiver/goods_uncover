@@ -6,14 +6,14 @@ from django.template import RequestContext
 
 from file_manage.models import UploadFile, Barcode, Comments
 from goods_uncover.settings import STATICFILES_DIRS
-from file_manage.forms import UploadForm
+from file_manage.forms import UploadForm, CheckedForm
 from django.contrib import messages
 
 
 
-def main_page(request):
+def main_page(request, barcode):
     
-    barcode = Barcode.objects.all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
+    barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
     if barcode:
         barcode = barcode[0]
     else:
@@ -24,13 +24,16 @@ def main_page(request):
             active = []
             active.append("")
             active.append("active")
+        request.session["find"] = False
             
     
     comments = Comments.objects.filter(FK_Barcode=barcode)
     uploadform = UploadForm(None)
+    checkedform = CheckedForm(None)
     template = get_template("main.html")
     context = RequestContext(request, {
         'uploadform' : uploadform,
+        'checkedform' : checkedform,
         'title' : barcode.Title,
         'comments': comments,
         'barcode' : barcode.Barcode,
@@ -38,6 +41,35 @@ def main_page(request):
     })
     return HttpResponse(template.render(context))
 
+def main_page2(request):
+    
+    barcode = 0#Barcode.objects.order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
+    if barcode:
+        barcode = barcode[0]
+    else:
+        barcode = Barcode()
+    active = ["active",""]
+    if request.session.get('find', False):
+        if request.session["find"]:
+            active = []
+            active.append("")
+            active.append("active")
+        request.session["find"] = False
+            
+    
+    comments = Comments.objects.filter(FK_Barcode=barcode)
+    uploadform = UploadForm(None)
+    checkedform = CheckedForm(None)
+    template = get_template("main.html")
+    context = RequestContext(request, {
+        'uploadform' : uploadform,
+        'checkedform' : checkedform,
+        'title' : barcode.Title,
+        'comments': comments,
+        'barcode' : barcode.Barcode,
+        'active': active,
+    })
+    return HttpResponse(template.render(context))
 
 
 

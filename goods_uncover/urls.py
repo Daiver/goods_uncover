@@ -6,7 +6,8 @@ from auth.views import *
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', main_page),
+    url(r'^(?P<barcode>\d+)/+$', main_page),
+    url(r'^$', main_page2),    
     url(r'^registr/$', registr),
     url(r'^login/$', login),
     url(r'^logout/$', logout),

@@ -9,7 +9,8 @@ from models import UploadFile, Barcode, Comments
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
 from django.contrib import messages
-from misc.pipline import barcode_search
+from misc.pipline import barcode_search, google_barcode_search, b_d
+from  misc import ya_market
 
 def allfiles(request):
     
@@ -27,47 +28,75 @@ def allfiles(request):
 def addfile(request):
     #if not request.user.is_authenticated():
      #   return HttpResponseRedirect('/login/')
+    barcode = 0
     if request.method == 'POST': 
-        uploadform = UploadForm(request.POST or None, request.FILES or None)
-        if uploadform.is_valid():
-            f =request.FILES['File']            
-            
-            new_file = UploadFile(FileName=f.name,File=f)
-            new_file.save()
-
-            #data = ' '.join(barcode_search(STATICFILES_DIRS[0] + str(new_file.File)))
-
-            dct_data = barcode_search(STATICFILES_DIRS[0] + str(new_file.File))
-            os.remove(STATICFILES_DIRS[0] + str(new_file.File))            
-            
-            magic_numbers = str(dct_data['sym'])
-            if request.user.is_authenticated():
-                us=request.user
+        uploadform = UploadForm(request.POST, request.FILES)
+        if uploadform.is_valid() and (request.FILES.get('File',False) or uploadform.cleaned_data.get('barcode',False)):
+            dct_data = {}            
+            if (request.FILES.get('File',False)):            
+                f =request.FILES['File']            
+                new_file = UploadFile(FileName=f.name,File=f)
+                new_file.save()
+                sym = b_d(STATICFILES_DIRS[0] + str(new_file.File))                
+                if not sym:
+                    dct_data = barcode_search(STATICFILES_DIRS[0] + str(new_file.File))
+                    sym = str(dct_data['sym'])
+                    os.remove(STATICFILES_DIRS[0] + str(new_file.File))    
+                
+                barcode = Barcode.objects.filter(Barcode=sym)
+                print barcode
+            elif uploadform.cleaned_data.get('barcode',False):
+                 
+                tp = None
+                ans = None
+                name = None
+                desc = None                
+                sym = uploadform.cleaned_data.get('barcode',0)
+                barcode = Barcode.objects.filter(Barcode=sym)
+                if not barcode:                
+                    if None != sym: 
+                        ya_ans = ya_market.ym_search(sym)
+                        if len(ya_ans) == 0:
+                            ans = google_barcode_search(sym)
+                            tp = 'google'
+                        else:
+                            ans = ya_market.ym_review(ya_ans[1])
+                            desc = ya_ans
+                            tp = 'ya market'
+                    dct_data = {'sym' : sym,
+                            'type' : tp,
+                            'name' : name,
+                            'desc' : desc,
+                            'ans' : ans }
+            if not barcode:
+                magic_numbers = str(dct_data['sym'])
+                if request.user.is_authenticated():
+                    us=request.user
+                else:
+                    us=None
+                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['desc'][0],Description="")
+                barcode.save()
+                
+                data = None
+                if dct_data['type'] == 'google':
+                    data = ' '.join(dct_data['ans'])
+                elif dct_data['type'] == 'ya market':
+                    data = ''
+                    for x in dct_data['ans']:
+                        comments = Comments(FK_Barcode=barcode,Author=x[0],Text=x[1])
+                        comments.save()
+                        
+                        #data += u'>>>\n %s\n%s' % (x[0], x[1])
+                    #data = data[:700]
+                else:
+                    data = 'None'
             else:
-                us=None
-            
-            barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['desc'][0],Description="")
-            barcode.save()
-            
-            data = None
-            if dct_data['type'] == 'google':
-                data = ' '.join(dct_data['ans'])
-            elif dct_data['type'] == 'ya market':
-                data = ''
-                for x in dct_data['ans']:
-                    comments = Comments(FK_Barcode=barcode,Author=x[0],Text=x[1])
-                    comments.save()
-                    
-                    #data += u'>>>\n %s\n%s' % (x[0], x[1])
-                #data = data[:700]
-            else:
-                data = 'None'
-            
+                barcode = barcode[0]
             request.session["find"]=True            
             
         else:
             request.session["find"]=False
-            messages.error(request, "Это не изображение")
+            messages.error(request, "Форма не заполнена")
             return HttpResponseRedirect(request.META['HTTP_REFERER'])            
     else:
         request.session["find"]=False
@@ -77,7 +106,7 @@ def addfile(request):
  #   context = RequestContext(request, {
  #       'data' : data,
     #})
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/' + str(barcode.Barcode))
     #return render_to_response("main.html",context_instance=RequestContext(request))
 
 def last_barcode(request):
