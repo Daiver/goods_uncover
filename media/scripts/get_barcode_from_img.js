@@ -25,7 +25,7 @@
             slineStep = height / (numLines + 1),
             round = Math.round;
         canvas.width = width;
-        canvas.height = height;
+        canvas.height = height;        
         ctx.drawImage(img, 0, 0, width, height);
         while(numLines--){
             var pxLine = ctx.getImageData(0, slineStep * spoints[numLines], width, 2).data,
