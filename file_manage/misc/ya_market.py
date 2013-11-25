@@ -29,16 +29,25 @@ def ym_review(modelid):
     
     return res
 
+def ym_description(modelid):
+    pageaddr = "http://market.yandex.ru/model-spec.xml?modelid=%s" % modelid
+    g = Grab()
+    g.go(pageaddr)
+    desc = g.doc.select('//table[@class="b-properties"]/tbody')
+    return desc.text_list()
+
+    # b-properties
 if __name__ == '__main__':
     if len(sys.argv) > 1:
         print ym_search(sys.argv[1])
     else:
         ans = ym_search("4710937382310")
-        ans2 = ym_review(ans[1])
-        print ans
-        for x in ans2: 
-            print '>>>>', x[0]
-            print x[1]
+        print ym_description(ans[1])
+        #ans2 = ym_review(ans[1])
+        #print ans
+        #for x in ans2: 
+        #    print '>>>>', x[0]
+        #    print x[1]
         
         #print ym_search("47109370")
         #print ym_search("4605922006695")
