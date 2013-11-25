@@ -19,9 +19,18 @@ def sf_search(name):
 
 def sf_reviews(href):
     href = 'http://www.sotmarket.ru%s#tab=opinions' % href
+    # b-responds
     print href
+    g = Grab()
+    g.go(href)
+    reviews = g.doc.select('//div[@class="b-responds"]')
+    reviews_auth = g.doc.select('//div[@class="b-responds"]/div/div/div[@class="b-responds-col side_left"]/div[@class="b-responds-author g-ui margin_075"]/b')
+    print reviews_auth.text_list(), len(reviews_auth.text_list())
+    # b-responds-author
+    
 
 if __name__ == '__main__':
     res = sf_search('htc one s')
     print res
-    print sf_reviews(res[2])
+    tmp = sf_reviews(res[2])
+    print tmp, len(tmp)
