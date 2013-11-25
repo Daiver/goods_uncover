@@ -25,12 +25,14 @@ def sf_reviews(href):
     g.go(href)
     reviews = g.doc.select('//div[@class="b-responds"]')
     reviews_auth = g.doc.select('//div[@class="b-responds"]/div/div/div[@class="b-responds-col side_left"]/div[@class="b-responds-author g-ui margin_075"]/b')
-    print reviews_auth.text_list(), len(reviews_auth.text_list())
+    reviews_text = g.doc.select('//div[@class="b-responds"]/div/div/div[@class="b-responds-col side_right"]/div')
+    return zip(reviews_auth.text_list(), reviews_text.text_list())
+    #print reviews_auth.text_list(), len(reviews_auth.text_list())
+    #print reviews_text.text_list(), len(reviews_text.text_list())
     # b-responds-author
     
 
 if __name__ == '__main__':
     res = sf_search('htc one s')
     print res
-    tmp = sf_reviews(res[2])
-    print tmp, len(tmp)
+    print sf_reviews(res[2])
