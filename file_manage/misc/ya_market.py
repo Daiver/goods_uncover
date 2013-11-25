@@ -43,7 +43,7 @@ if __name__ == '__main__':
     else:
         ans = ym_search("4710937382310")
         print ans
-        print ym_descripetion(ans[1])
+        print ym_description(ans[1])
         #ans2 = ym_review(ans[1])
         #print ans
         #for x in ans2: 

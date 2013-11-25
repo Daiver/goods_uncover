@@ -3,16 +3,20 @@ from grab import Grab
 import grab
 
 def sf_search(name):
+    def head_or_none(l):
+        return None if len(l) == 0 else l[0]
     name = name.replace(' ', '+')
     # l-catalog-item
     pageaddr = "http://www.sotmarket.ru/search/?ref=7&q=%s" % name
     g = Grab()
     g.go(pageaddr)
     #items = g.doc.select('//li[@class="l-catalog-item"]')
+    #b-sbutton mod_price skin_product size_normal scheme_available
     items = g.doc.select('//li[@class="l-catalog-item"]/div/div[@class="b-catalog_goods-link"]').text_list()
-    item_name = None if len(items) == 0 else items[0]
+    price = g.doc.select('//li[@class="l-catalog-item"]/div/span[@class="b-sbutton mod_price skin_product size_normal scheme_available"]').text_list()
+    href = g.doc.select('//li[@class="l-catalog-item"]/div/div[@class="b-catalog_goods-link"]/a/@href').text_list()
 
-    return (item_name)
+    return map(head_or_none, [items, price, href])
     '''for x in items.text_list():
         try:
             print x
