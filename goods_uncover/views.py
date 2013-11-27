@@ -6,9 +6,10 @@ from django.template import RequestContext
 
 from file_manage.models import UploadFile, Barcode, Comments
 from goods_uncover.settings import STATICFILES_DIRS
-from file_manage.forms import UploadForm, CheckedForm
+from file_manage.forms import UploadForm, CheckedForm, CommentForm
 from django.contrib import messages
 
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 
 
 def main_page(request, barcode):
@@ -30,12 +31,28 @@ def main_page(request, barcode):
             
     
     comments = Comments.objects.filter(FK_Barcode=barcode)
+
+    paginator = Paginator(comments, 4) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        ms = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ms = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ms = paginator.page(paginator.num_pages)    
+    
     uploadform = UploadForm(None)
     checkedform = CheckedForm(None)
+    commentform = CommentForm(None)
     template = get_template("main.html")
     context = RequestContext(request, {
         'uploadform' : uploadform,
         'checkedform' : checkedform,
+        'commentform': commentform,
+        'ms' : ms,
         'title' : barcode.Title,
         'comments': comments,
         'barcode' : barcode.Barcode,

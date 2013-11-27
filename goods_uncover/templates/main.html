@@ -88,7 +88,7 @@
         #upBlock {
             position:fixed;
             bottom:100px;
-            left: 80%;
+            left: 10%;
             color:#000000;
             padding:6px;
             text-align:center;
@@ -109,6 +109,13 @@
           color: red;
           font-weight: bold;
       }
+
+    hr {
+        border: none; /* Убираем границу */
+        background-color: #cccccc; /* Цвет линии */
+        color: #cccccc; /* Цвет линии для IE6-7 */
+        height: 1px; /* Толщина линии */
+       }
 
         </style>
     </head>
@@ -144,6 +151,7 @@
     
         <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
         
+<!--<input type="button" value="Goods Uncover" class="btn btn-success btn-small">-->
 
 {%block application%}
 <div align="right" id="auth">
@@ -155,7 +163,7 @@
 </div>    
 
 
-            <div class="tabbable"> <!-- Only required for left/right tabs -->
+            <div class="tabbable" id="mainContent"> <!-- Only required for left/right tabs -->
                   <ul class="nav nav-tabs" id="myTab" >
                         <li class={{active.0}}><a id=1 href="#main" data-toggle="tab"><i class="icon-search"></i>Поиск</a></li>
                         <li class={{active.1}}><a id=2 href="#descr" data-toggle="tab"><i class="icon-list"></i>Результаты</a></li>        
@@ -177,13 +185,16 @@
                                               <li><a href="#">Другой сервис</a></li>                      
                                         </ul>
                                       </div><!--/.well -->
+                            <button type="button" onclick="$('.sidebar-nav').toggle('slow')" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>                                      
                             </div> 
                             
-                             <div class="span9 offset2">             
+                             <div class="span9 offset2">  
+                                
                                 <h4>Штрих-код:</h4> {{barcode}} </br>            
                                 <h4>Название:</h4> {{title}}</br>
                                 <h4>Описание:</h4> {%for d in data%}
                                                         {{d}}<br>
+                                                        <hr>
                                                     {%endfor%}                                                                    
                                  </br> 
                             </div> 
@@ -202,12 +213,21 @@
                                                       <li><a href="#">Другой сервис</a></li>                      
                                                 </ul>
                                               </div><!--/.well -->
+                                <button type="button" id="hide" onclick="$('.sidebar-nav').toggle('slow');" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>
                                 </div> 
                                  <div class="span9 offset2">           
-                                    {%for com in comments%}
-                                    <b>Имя:</b> {{com.Author}} <br>
-                                    <b>Текст:</b> {{com.Text|linebreaksbr}} <br><br>
-                                    {%endfor%}
+                                    <form>
+                                        {{commentform}}
+                                        {% if commentform%}
+                                            </br><input type="submit" value="Отправить" class="btn btn-success btn-medium">
+                                        {%endif%}
+                                    </form>
+                                     <div  id="comm">                                     
+                                        {%for com in ms%}
+                                            <b>Имя:</b> {{com.Author}} <br>
+                                            <b>Текст:</b> {{com.Text|linebreaksbr}} <br><br>
+                                        {%endfor%}
+                                    </div>
                                 </div>
                             </div>                           
                         </div> <!--tabpane-->
@@ -215,10 +235,50 @@
                 </div> <!--tabtable-->
 {%endblock%}
 
+<script>
+
+                              
+
+                var page = 2
+                function newPage(){
+                    if(page <= {{ ms.paginator.num_pages }}){
+                            $("#upBlock").css('display','block');
+                        
+                        setTimeout(function () {
+                            $.get("/{{barcode}}/?page="+page,function(data){
+                                $("#comm").append($("#comm",data)).end();
+                            },'html');
+                            $("#upBlock").css('display','none');
+                            page = page + 1;
+                        },100);
+                    }    
+                }
+                $(document).ready(function(){
+
+                    var scrH = $(window).height();
+                    var scrHP = $("#comments").height();
+                                        
+                        $(window).scroll(function(){
+                            var scro = $(this).scrollTop();
+                            var scrHP = $("#wrap").height();
+                                var scrH2 = 0;
+                            scrH2 = scrH + scro;
+                            var leftH = scrHP - scrH2;
+                        
+                        if((leftH < 0)&&($("#comments").attr("class") == "tab-pane active")){
+                                
+                             newPage();
+                            }
+                        
+                        
+                        });
+                    
+                });
+          </script>
 
 </div><!--wrap-->
 <div id="push"></div>
-<div id="upBlock"><img align="right" src="{{ STATIC_URL }}img/loader.gif" border="0" /></div> 
+<div id="upBlock"><img align="left" src="{{ STATIC_URL }}img/loader.gif" border="0" /></div> 
     </div>    
     <div id="footer">
       <div class="container">

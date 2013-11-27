@@ -3,7 +3,7 @@
 <form align="center" name="file" enctype="multipart/form-data" action="/files/add/" method="POST">{% csrf_token %}
     <table>
     {{uploadform.File}} </br></br>
-   <h2>ИЛИ</h2> <br>
+   <h4>ИЛИ</h4> <br>
 
     {{uploadform.barcode.label}} {{uploadform.barcode}}</br></br>
   
