@@ -44,4 +44,4 @@ if __name__ == '__main__':
     res = sf_search('htc one s')
     print res
     #print sf_reviews(res[2])
-    print sf_desc(res[2])
+    print sf_desc(res[2])[0]

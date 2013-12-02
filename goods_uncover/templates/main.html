@@ -181,16 +181,17 @@
                                         <ul class="nav nav-list">
                                             <li class="{{active_search.0}}"><a  href="/yandex/{{barcode}}/" >Яндекс.Маркет</a></li>
                                               <li class="{{active_search.1}}" ><a href="/softmarket/{{barcode}}/" >SoftMarket</a></li>
-                                              <!--<li><a href="#">Другой сервис</a></li>-->
-                                              <!--<li><a href="#">Другой сервис</a></li>-->                      
-                                        </ul>
+                                       </ul>
                                       </div><!--/.well -->
-                                   <!-- <button type="button" onclick="$('.sidebar-nav').toggle('slow')" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button> -->                                     
                                 </div> 
                                 
                                  <div class="span9">  
-                                    
-                                    <h4>Штрих-код:</h4> {{barcode}} </br>            
+                                    {%if active_search.0%} 
+                                        <h3>Результаты с Яндекс.Маркет</h3>                                    
+                                   {%else%}
+                                        <h3>Результаты с СофтМаркет</h3>                                                                        
+                                    {%endif%}
+                                   <h4>Штрих-код:</h4> {{barcode}} </br>            
                                     <h4>Название:</h4> {{title}}</br>
                                     <h4>Описание:</h4> {%for d in data%}
                                                             {{d}}<br>
@@ -218,6 +219,11 @@
                                                   </div><!--/.well -->
                                     </div> 
                                      <div class="span9">
+                                    {%if active_search.0%} 
+                                        <h3>Результаты с Яндекс.Маркет</h3>                                    
+                                    {%else%}
+                                        <h3>Результаты с СофтМаркет</h3>                                                                        
+                                    {%endif%}
                                          <div  id="comm">                                     
                                             {%for com in ms%}
                                                 <b>Имя:</b> {{com.Author}} <br>

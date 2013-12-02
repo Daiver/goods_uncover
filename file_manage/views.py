@@ -5,12 +5,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.loader import get_template
 from django.template import RequestContext
-from models import UploadFile, Barcode, Comments
+from models import UploadFile, Barcode, BarcodeYandex, BarcodeSoft, CommentsYandex, CommentsSoft
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
 from django.contrib import messages
 from misc.pipline import barcode_search, google_barcode_search, b_d
-from  misc import ya_market
+from  misc import ya_market, softmarket
 
 def allfiles(request):
     
@@ -59,23 +59,34 @@ def addfile(request):
                     us=None
                 
                 #fix this
-                descr = ya_market.ym_description(dct_data['modelId'][1])
-                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'],Description=descr)                
+                descrYa = ya_market.ym_description(dct_data['modelId'][1])
+                barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'])                
                 barcode.save()
-
+                barcodeYa = BarcodeYandex(FK_Barcode=barcode,Description=descrYa)
+                barcodeYa.save()
+                
                 data = None
                 if dct_data['type'] == 'google':
                     data = ' '.join(dct_data['ans'])
                 elif dct_data['type'] == 'ya market':
                     data = ''                                    
                     for x in dct_data['ans']:
-                        comments = Comments(FK_Barcode=barcode,Author=x[0],Text=x[1])
-                        comments.save()
-                        
-                        #data += u'>>>\n %s\n%s' % (x[0], x[1])
-                    #data = data[:700]
+                        commentsYa = CommentsYandex(FK_Barcode=barcode,Author=x[0],Text=x[1])
+                        commentsYa.save()
                 else:
                     data = 'None'
+                
+                
+                
+                #fill softmarket                
+                resSo = softmarket.sf_search(dct_data['name'])                
+                barcodeSo = BarcodeSoft(FK_Barcode=barcode,Description=softmarket.sf_desc(resSo[2])[0])                
+                barcodeSo.save()
+                comSo = softmarket.sf_reviews(resSo[2])
+                for com in comSo:
+                    commentsSo = CommentsSoft(FK_Barcode=barcode,Author=com[0], Text=com[1])
+                    commentsSo.save()
+
             else:
                 barcode = barcode[0]
             request.session["find"]=True            

@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext
 
-from file_manage.models import UploadFile, Barcode, Comments
+from file_manage.models import UploadFile, Barcode, CommentsYandex, CommentsSoft, BarcodeYandex, BarcodeSoft
 from goods_uncover.settings import STATICFILES_DIRS
 from file_manage.forms import UploadForm, CheckedForm, CommentForm
 from django.contrib import messages
@@ -17,7 +17,9 @@ def yandex_search(request, barcode):
     barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
     if barcode:
         barcode = barcode[0]
-        descr = barcode.Description.split('|||')    
+        descr = BarcodeYandex.objects.filter(FK_Barcode=barcode) #barcode.Description.split('|||')
+        if descr:
+            descr = descr[0].Description.split('|||')
 
     else:
         barcode = Barcode()
@@ -33,7 +35,7 @@ def yandex_search(request, barcode):
             
     active_search = ["active",""]
         
-    comments = Comments.objects.filter(FK_Barcode=barcode)
+    comments = CommentsYandex.objects.filter(FK_Barcode=barcode)
 
     paginator = Paginator(comments, 4) # Show 25 contacts per page
 
@@ -70,8 +72,10 @@ def softmarket_search(request, barcode):
     barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
     if barcode:
         barcode = barcode[0]
-        descr = barcode.Description.split('|||')    
-
+        descr = BarcodeSoft.objects.filter(FK_Barcode=barcode) #barcode.Description.split('|||')    
+        if descr:
+            descr = descr[0].Description.split('|||')
+                
     else:
         barcode = Barcode()
     active_pane = ["active",""]
@@ -84,7 +88,7 @@ def softmarket_search(request, barcode):
         #request.session["find"] = False
             
     active_search = ["","active"]
-    comments = Comments.objects.filter(FK_Barcode=barcode)
+    comments = CommentsSoft.objects.filter(FK_Barcode=barcode)
 
     paginator = Paginator(comments, 4) # Show 25 contacts per page
 
@@ -133,7 +137,7 @@ def main_page2(request):
         request.session["find"] = False
             
     
-    comments = Comments.objects.filter(FK_Barcode=barcode)
+    comments = []#Comments.objects.filter(FK_Barcode=barcode)
     uploadform = UploadForm(None)
     checkedform = CheckedForm(None)
     template = get_template("main.html")
