@@ -92,7 +92,7 @@ def addfile(request):
  #   context = RequestContext(request, {
  #       'data' : data,
     #})
-    return HttpResponseRedirect('/' + str(barcode.Barcode))
+    return HttpResponseRedirect('/yandex/' + str(barcode.Barcode))
     #return render_to_response("main.html",context_instance=RequestContext(request))
 
 def last_barcode(request):

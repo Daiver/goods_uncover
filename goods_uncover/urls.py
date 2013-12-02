@@ -6,7 +6,9 @@ from auth.views import *
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^(?P<barcode>\d+)/+$', main_page),
+    url(r'^yandex/(?P<barcode>\d+)/+$', yandex_search),
+    url(r'^softmarket/(?P<barcode>\d+)/+$', softmarket_search),
+    
     url(r'^$', main_page2),    
     url(r'^registr/$', registr),
     url(r'^login/$', login),

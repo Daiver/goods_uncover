@@ -156,35 +156,35 @@
 
 
 
-<div class="row-fluid">                             
+<div class="row">                             
                         
            
 
-            <div class="span9">  
+            <div class="span12">  
 
                 <div class="tabbable" id="mainContent"> <!-- Only required for left/right tabs -->
                       <ul class="nav nav-tabs" id="myTab" >
-                            <li class={{active.0}}><a id=1 href="#main" data-toggle="tab"><i class="icon-search"></i>Поиск</a></li>
-                            <li class={{active.1}}><a id=2 href="#descr" data-toggle="tab"><i class="icon-list"></i>Результаты</a></li>        
+                            <li class={{active_pane.0}}><a id=1 href="#main" data-toggle="tab"><i class="icon-search"></i>Поиск</a></li>
+                            <li class={{active_pane.1}}><a id=2 href="#descr" data-toggle="tab"><i class="icon-list"></i>Результаты</a></li>        
                             <li class=""><a id=3 href="#comments" data-toggle="tab"><i class="icon-user"></i>Комментарии</a></li>
                       </ul>
                       <div class="tab-content">
-                            <div class="tab-pane {{active.0}}" id="main">
+                            <div class="tab-pane {{active_pane.0}}" id="main">
                                 {%include "last_barcode.html"%}          
                             </div>
                             
-                            <div class="tab-pane {{active.1}}" id="descr"> 
-                                <div class="row-fluid">                             
-                                 <div class="span3">  
+                            <div class="tab-pane {{active_pane.1}}" id="descr"> 
+                                <div class="row">                             
+                                 <div class="span2">  
                                      <div class="well sidebar-nav">
                                         <ul class="nav nav-list">
-                                            <li class="active"><a  href="#">Yandex mareket</a></li>
-                                              <li><a href="#">Другой сервис</a></li>
-                                              <li><a href="#">Другой сервис</a></li>
-                                              <li><a href="#">Другой сервис</a></li>                      
+                                            <li class="{{active_search.0}}"><a  href="/yandex/{{barcode}}/" >Яндекс.Маркет</a></li>
+                                              <li class="{{active_search.1}}" ><a href="/softmarket/{{barcode}}/" >SoftMarket</a></li>
+                                              <!--<li><a href="#">Другой сервис</a></li>-->
+                                              <!--<li><a href="#">Другой сервис</a></li>-->                      
                                         </ul>
                                       </div><!--/.well -->
-                                    <button type="button" onclick="$('.sidebar-nav').toggle('slow')" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>                                      
+                                   <!-- <button type="button" onclick="$('.sidebar-nav').toggle('slow')" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button> -->                                     
                                 </div> 
                                 
                                  <div class="span9">  
@@ -202,17 +202,38 @@
                         
                             
                             <div  class="tab-pane" id="comments" >
-                                <div class="row-fluid">                            
-                                     <div class="span3">  
+                                <div class="row">                            
+                                     <div class="span2">  
                                                  <div class="well sidebar-nav">
                                                     <ul class="nav nav-list">
-                                                        <li class="active"><a href="#">Yandex mareket</a></li>
-                                                          <li><a href="#">Другой сервис</a></li>
-                                                          <li><a href="#">Другой сервис</a></li>
-                                                          <li><a href="#">Другой сервис</a></li>                      
+                                                        <li class="{{active_search.0}}" ><a href="/yandex/{{barcode}}/">Яндекс.Маркет</a></li>
+                                                          <li class="{{active_search.1}}"><a href="/softmarket/{{barcode}}/">SoftMarket</a></li>
+                                                         <!--<li><a href="#gucomments" data-toggle="tab">Goods Uncover</a></li> -->
                                                     </ul>
                                                   </div><!--/.well -->
-                                    <button type="button" id="hide" onclick="$('.sidebar-nav').toggle('slow');" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>
+                                    </div> 
+                                     <div class="span9">
+                                         <div  id="comm">                                     
+                                            {%for com in ms%}
+                                                <b>Имя:</b> {{com.Author}} <br>
+                                                <b>Текст:</b> {{com.Text|linebreaksbr}} <br><br>
+                                            {%endfor%}
+                                        </div>
+                                    </div>
+                                </div>                           
+                            </div> <!--tabpane-->
+
+
+                        <div  class="tab-pane" id="gucomments" >
+                                <div class="row">                            
+                                     <div class="span2">  
+                                                 <div class="well sidebar-nav">
+                                                    <ul class="nav nav-list">
+                                                        <li><a href="#" data-toggle="tab">Яндекс.Маркет</a></li>
+                                                          <li><a href="#" data-toggle="tab">SoftMarket</a></li>
+                                                         <li class="active" ><a href="#gucomments" data-toggle="tab">Goods Uncover</a></li> 
+                                                    </ul>
+                                                  </div><!--/.well -->
                                     </div> 
                                      <div class="span9">           
                                         <form>
@@ -230,6 +251,7 @@
                                     </div>
                                 </div>                           
                             </div> <!--tabpane-->
+
                       </div> <!--tabcontent-->
                     </div> <!--tabtable-->
     </div><!--span-->

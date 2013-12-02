@@ -12,7 +12,7 @@ from django.contrib import messages
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 
 
-def main_page(request, barcode):
+def yandex_search(request, barcode):
     descr = None
     barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
     if barcode:
@@ -21,15 +21,18 @@ def main_page(request, barcode):
 
     else:
         barcode = Barcode()
-    active = ["active",""]
+    
+    active_pane = ["active",""]
+
     if request.session.get('find', False):
         if request.session["find"]:
-            active = []
-            active.append("")
-            active.append("active")
+            active_pane = []
+            active_pane.append("")
+            active_pane.append("active")
         request.session["find"] = False
             
-    
+    active_search = ["active",""]
+        
     comments = Comments.objects.filter(FK_Barcode=barcode)
 
     paginator = Paginator(comments, 4) # Show 25 contacts per page
@@ -57,9 +60,62 @@ def main_page(request, barcode):
         'comments': comments,
         'barcode' : barcode.Barcode,
         'data': descr,
-        'active': active,
+        'active_pane': active_pane,
+        'active_search': active_search,
     })
     return HttpResponse(template.render(context))
+
+def softmarket_search(request, barcode):
+    descr = None
+    barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
+    if barcode:
+        barcode = barcode[0]
+        descr = barcode.Description.split('|||')    
+
+    else:
+        barcode = Barcode()
+    active_pane = ["active",""]
+
+    if request.session.get('find', False):
+        if request.session["find"]:
+            active_pane = []
+            active_pane.append("")
+            active_pane.append("active")
+        request.session["find"] = False
+            
+    active_search = ["","active"]
+    comments = Comments.objects.filter(FK_Barcode=barcode)
+
+    paginator = Paginator(comments, 4) # Show 25 contacts per page
+
+    page = request.GET.get('page')
+    try:
+        ms = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        ms = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        ms = paginator.page(paginator.num_pages)    
+    
+    uploadform = UploadForm(None)
+    checkedform = CheckedForm(None)
+    commentform = CommentForm(None)
+    template = get_template("main.html")
+    context = RequestContext(request, {
+        'uploadform' : uploadform,
+        'checkedform' : checkedform,
+        'commentform': commentform,
+        'ms' : ms,
+        'title' : barcode.Title,
+        'comments': comments,
+        'barcode' : barcode.Barcode,
+        'data': descr,
+        'active_pane': active_pane,
+        'active_search': active_search,
+    })
+    return HttpResponse(template.render(context))
+
 
 def main_page2(request):
     
@@ -68,12 +124,12 @@ def main_page2(request):
         barcode = barcode[0]
     else:
         barcode = Barcode()
-    active = ["active",""]
+    active_pane = ["active",""]
     if request.session.get('find', False):
         if request.session["find"]:
-            active = []
-            active.append("")
-            active.append("active")
+            active_pane = []
+            active_pane.append("")
+            active_pane.append("active")
         request.session["find"] = False
             
     
@@ -87,7 +143,7 @@ def main_page2(request):
         'title' : barcode.Title,
         'comments': comments,
         'barcode' : barcode.Barcode,
-        'active': active,
+        'active_pane': active_pane,
     })
     return HttpResponse(template.render(context))
 
