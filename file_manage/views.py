@@ -83,7 +83,7 @@ def addfile(request):
         else:
             request.session["find"]=False
             messages.error(request, "Форма не заполнена")
-            return HttpResponseRedirect(request.META['HTTP_REFERER'])            
+            return HttpResponseRedirect("/")            
     else:
         request.session["find"]=False
         uploadform = UploadForm(None, None)

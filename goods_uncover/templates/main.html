@@ -174,6 +174,7 @@
                             </div>
                             
                             <div class="tab-pane {{active_pane.1}}" id="descr"> 
+                                {%if barcode%}                                
                                 <div class="row">                             
                                  <div class="span2">  
                                      <div class="well sidebar-nav">
@@ -198,10 +199,14 @@
                                      </br> 
                                 </div> 
                             </div>
+                            {%else%}
+                                <h3>Нет результатов</h3>    
+                            {%endif%}
                             </div> <!--tab-pane-->        
                         
                             
                             <div  class="tab-pane" id="comments" >
+                                {%if barcode%}
                                 <div class="row">                            
                                      <div class="span2">  
                                                  <div class="well sidebar-nav">
@@ -220,7 +225,10 @@
                                             {%endfor%}
                                         </div>
                                     </div>
-                                </div>                           
+                                </div> 
+                                {%else%}
+                                <h3>Нет результатов</h3>     
+                                {%endif%}                     
                             </div> <!--tabpane-->
 
 

@@ -29,7 +29,7 @@ def yandex_search(request, barcode):
             active_pane = []
             active_pane.append("")
             active_pane.append("active")
-        request.session["find"] = False
+        #request.session["find"] = False
             
     active_search = ["active",""]
         
@@ -81,7 +81,7 @@ def softmarket_search(request, barcode):
             active_pane = []
             active_pane.append("")
             active_pane.append("active")
-        request.session["find"] = False
+        #request.session["find"] = False
             
     active_search = ["","active"]
     comments = Comments.objects.filter(FK_Barcode=barcode)
