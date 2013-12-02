@@ -8,11 +8,11 @@ from django.template.loader import get_template
 from django.template import RequestContext
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_protect
-from django.views.generic.simple import direct_to_template
+#from django.views.generic.simple import direct_to_template
 from forms import *
 
-def main(request):
-        return direct_to_template(request, 'main.html')
+#def main(request):
+#        return direct_to_template(request, 'main.html')
 
 @csrf_protect
 def registr(request):

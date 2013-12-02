@@ -11,8 +11,8 @@ class UploadForm(forms.Form):
                             'data-source':''}),required=False)
     
 class CheckedForm(forms.Form):
-    check = forms.ComboField(label = _(u'Проекты'), widget=forms.CheckboxSelectMultiple(
-                                                choices=(('ya_market',_(u'YA_MARKET')),('other',_(u'Другие ')))),required=False, initial=['ya_market'])
+    check = forms.ComboField(label = _(u'Источники'), widget=forms.RadioSelect(
+                                                choices=(('ya_market',_(u'Яндекс.Маркет')),('other',_(u'Другие ')))),required=False, initial=['ya_market'])
                                                 
 class CommentForm(forms.Form):
     author = forms.CharField(label = _(u'Автор '), widget=forms.TextInput(attrs={'data-items':'4','autocomplete':'off','data-provide':'typeahead',
