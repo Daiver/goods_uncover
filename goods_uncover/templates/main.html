@@ -97,13 +97,7 @@
         }
         
 
-    div, button {clear:both;}
-     .pass:before {
-          content: 'PASS: ';
-          color:  blue;
-          font-weight: bold;
-      }
-
+   
       .fail:before {
           content: 'FAIL: ';
           color: red;
@@ -149,9 +143,7 @@
             {% endblock %}
     </div>
     
-        <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
         
-<!--<input type="button" value="Goods Uncover" class="btn btn-success btn-small">-->
 
 {%block application%}
 <div align="right" id="auth">
@@ -166,17 +158,7 @@
 
 <div class="row-fluid">                             
                         
-            <div class="span2">  
-                 <div class="well sidebar-nav">
-                    <ul class="nav nav-list">
-                        <li class="active"><a  href="#">Yandex mareket</a></li>
-                          <li><a href="#">Другой сервис</a></li>
-                          <li><a href="#">Другой сервис</a></li>
-                          <li><a href="#">Другой сервис</a></li>                      
-                    </ul>
-                  </div><!--/.well -->
-                <button type="button" onclick="$('.sidebar-nav').toggle('slow')" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>                                      
-            </div> 
+           
 
             <div class="span9">  
 
@@ -193,9 +175,19 @@
                             
                             <div class="tab-pane {{active.1}}" id="descr"> 
                                 <div class="row-fluid">                             
+                                 <div class="span3">  
+                                     <div class="well sidebar-nav">
+                                        <ul class="nav nav-list">
+                                            <li class="active"><a  href="#">Yandex mareket</a></li>
+                                              <li><a href="#">Другой сервис</a></li>
+                                              <li><a href="#">Другой сервис</a></li>
+                                              <li><a href="#">Другой сервис</a></li>                      
+                                        </ul>
+                                      </div><!--/.well -->
+                                    <button type="button" onclick="$('.sidebar-nav').toggle('slow')" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>                                      
+                                </div> 
                                 
-                                
-                                 <div class="span9 offset2">  
+                                 <div class="span9">  
                                     
                                     <h4>Штрих-код:</h4> {{barcode}} </br>            
                                     <h4>Название:</h4> {{title}}</br>
@@ -211,10 +203,10 @@
                             
                             <div  class="tab-pane" id="comments" >
                                 <div class="row-fluid">                            
-                                     <div class="span2">  
+                                     <div class="span3">  
                                                  <div class="well sidebar-nav">
                                                     <ul class="nav nav-list">
-                                                        <li><a href="#">Yandex mareket</a></li>
+                                                        <li class="active"><a href="#">Yandex mareket</a></li>
                                                           <li><a href="#">Другой сервис</a></li>
                                                           <li><a href="#">Другой сервис</a></li>
                                                           <li><a href="#">Другой сервис</a></li>                      
@@ -222,7 +214,7 @@
                                                   </div><!--/.well -->
                                     <button type="button" id="hide" onclick="$('.sidebar-nav').toggle('slow');" class="btn btn-success btn-small" ><i class="icon-resize-vertical icon-white"></i> Источники </button>
                                     </div> 
-                                     <div class="span9 offset2">           
+                                     <div class="span9">           
                                         <form>
                                             {{commentform}}
                                             {% if commentform%}
@@ -244,21 +236,6 @@
 </div>
 {%endblock%}
 
-
-<div class="row">
-  <div class="span9">
-    Уровень 1 
-    <div class="row">
-      <div class="span6">Уровень 2
-        <div class="row">
-          <div class="span3">Уровень 3</div>
-          <div class="span3">Уровень 3</div>
-        </div>
-      </div>
-      <div class="span3">Уровень 2</div>
-    </div>
-  </div>
-</div>
 <script>
 
                               
@@ -280,8 +257,8 @@
                 $(document).ready(function(){
 
                     var scrH = $(window).height();
-                    var scrHP = $("#comments").height();
-                                        
+                    var scrHP = $("#comments").height();                 
+                               
                         $(window).scroll(function(){
                             var scro = $(this).scrollTop();
                             var scrHP = $("#wrap").height();
