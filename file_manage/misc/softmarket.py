@@ -17,10 +17,18 @@ def sf_search(name):
 
     return map(head_or_none, [items, price, href])
 
+def sf_desc(href):
+    href = 'http://www.sotmarket.ru%s#tab=specifications' % href
+    # b-responds
+    g = Grab()
+    g.go(href)
+    desc = g.doc.select('//div[@class="b-goods-specifications"]')
+    #print desc.text_list()
+    return desc.text_list()
+
 def sf_reviews(href):
     href = 'http://www.sotmarket.ru%s#tab=opinions' % href
     # b-responds
-    print href
     g = Grab()
     g.go(href)
     reviews = g.doc.select('//div[@class="b-responds"]')
@@ -35,4 +43,5 @@ def sf_reviews(href):
 if __name__ == '__main__':
     res = sf_search('htc one s')
     print res
-    print sf_reviews(res[2])
+    #print sf_reviews(res[2])
+    print sf_desc(res[2])
