@@ -111,10 +111,16 @@
         height: 1px; /* Толщина линии */
        }
 
+    .logo>a>img{
+        height:100px
+    }
+
         </style>
     </head>
     <body>
-<div id="wrap">
+
+
+<div  id="wrap">
     <div class="alert_block" id="alert_block">
         {% block messages %}
                 {% if messages %}
@@ -142,16 +148,17 @@
                 {% endif %}
             {% endblock %}
     </div>
-    
-        
+
+<div class="logo"><a href="/">  <img src="{{STATIC_URL}}img/logo.png" height="10"> </a> </div>      
 
 {%block application%}
-<div align="right" id="auth">
+<div class="span4 offset7" align="right" id="auth">
+      
     {% if not user.is_authenticated %}
-        <a href="/login/">SignIn</a>
+        <a href="/login/"> <i class="icon-off"></i>SignIn</a>
     {%else%}
 	<h4>Привет, {{user.username}} ! </h4>
-        <a href="/logout/">Logout</a>
+        <a href="/logout/"><i class="icon-off"></i>SignOut</a>
     {%endif%}
 </div>    
 
@@ -315,8 +322,9 @@
           </script>
 
 </div><!--wrap-->
-<div id="push"></div>
-<div id="upBlock"><img align="left" src="{{ STATIC_URL }}img/loader.gif" border="0" /></div> 
+
+    <div id="push"></div>
+        <div id="upBlock"><img align="left" src="{{ STATIC_URL }}img/loader.gif" border="0" /></div> 
     </div>    
     <div id="footer">
       <div class="container">
