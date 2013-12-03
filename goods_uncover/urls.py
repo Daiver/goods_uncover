@@ -15,8 +15,8 @@ urlpatterns = patterns('',
     url(r'^logout/$', logout),
     url(r'^test/$', test),
 
-
-     url(r'^files/',include('file_manage.urls')),
+    url(r'^social/', include('social_auth.urls')),
+    url(r'^files/',include('file_manage.urls')),
     # Examples:
     # url(r'^$', 'goods_uncover.views.home', name='home'),
     # url(r'^goods_uncover/', include('goods_uncover.foo.urls')),

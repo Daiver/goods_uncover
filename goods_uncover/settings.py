@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     'goods_uncover',
     'auth',
     'file_manage',
+    'social_auth',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
@@ -166,3 +167,13 @@ LOGGING = {
         },
     }
 }
+
+AUTHENTICATION_BACKENDS = (
+    'social_auth.backends.contrib.vk.VKOAuth2Backend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+VK_APP_ID = '4035215'
+VK_API_SECRET = 'DUnemKTpAWq0WQ6oA10E'
+
+

@@ -119,26 +119,4 @@ def last_barcode(request):
     })
     return HttpResponse(template.render(context))
     
-'''    
-def delfile(request,file_id):
-    #if not request.user.is_authenticated():
-     #   return HttpResponseRedirect('/login/')
-        
-    try:
-        del_file = UploadFile.objects.get(id=file_id)   
-    except:
-        messages.error(request, 'Файл не найден')
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
-        
-    if del_file.Owner != request.user:
-        messages.error(request, 'Недостаточно прав')
-    else:
-        if os.path.isfile(STATICFILES_DIRS[0] + str(del_file.File)):
-                os.remove(STATICFILES_DIRS[0] + str(del_file.File))        
-        f_name = del_file.FileName
-        del_file.delete()
-        messages.success(request, str(f_name) + ' был успешно удален')
 
-            
-    return HttpResponseRedirect(request.META['HTTP_REFERER'])
-'''
