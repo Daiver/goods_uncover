@@ -104,7 +104,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
+    'social_auth.middleware.SocialAuthExceptionMiddleware',
+   # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
@@ -137,6 +138,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
 )
 
+
+
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 
 # A sample logging configuration. The only tangible logging
@@ -167,13 +170,19 @@ LOGGING = {
         },
     }
 }
-
+#TEMPLATE_CONTEXT_PROCESSORS = (
+#    'django.contrib.auth.context_processors.auth',
+#    'django.core.context_processors.request',
+#    'social_auth.context_processors.social_auth_by_name_backends',
+#	"social_auth.context_processors.social_auth_by_type_backends",
+#)
 AUTHENTICATION_BACKENDS = (
     'social_auth.backends.contrib.vk.VKOAuth2Backend',
-    'django.contrib.auth.backends.ModelBackend',
+   'django.contrib.auth.backends.ModelBackend',
 )
 
 VK_APP_ID = '4035215'
-VK_API_SECRET = 'DUnemKTpAWq0WQ6oA10E'
-
+VKONTAKTE_APP_ID = VK_APP_ID
+VK_API_SECRET = 'DUnemKTAWq0WQ6oA10E'
+VKONTAKTE_API_SECRET = VK_API_SECRET
 
