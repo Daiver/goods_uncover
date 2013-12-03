@@ -186,3 +186,20 @@ VKONTAKTE_APP_ID = VK_APP_ID
 VK_API_SECRET = 'DUnemKTAWq0WQ6oA10E'
 VKONTAKTE_API_SECRET = VK_API_SECRET
 
+SOCIAL_AUTH_PIPELINE = (
+    # Получает по backend и uid инстансы social_user и user
+    'social_auth.backends.pipeline.social.social_auth_user',
+    # Получает по user.email инстанс пользователя и заменяет собой тот, который получили выше.
+    # Кстати, email выдает только Facebook и GitHub, а Vkontakte и Twitter не выдают
+    'social_auth.backends.pipeline.associate.associate_by_email',
+    # Пытается собрать правильный username, на основе уже имеющихся данных
+    'social_auth.backends.pipeline.user.get_username',
+    # Создает нового пользователя, если такого еще нет
+    'social_auth.backends.pipeline.user.create_user',
+    # Пытается связать аккаунты
+    'social_auth.backends.pipeline.social.associate_user',
+    # Получает и обновляет social_user.extra_data
+    'social_auth.backends.pipeline.social.load_extra_data',
+    # Обновляет инстанс user дополнительными данными с бекенда
+    'social_auth.backends.pipeline.user.update_user_details'
+)
