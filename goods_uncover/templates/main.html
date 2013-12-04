@@ -67,10 +67,10 @@
               padding-right: 5px;
             }
             #footer {
-              margin-left: -20px;
-              margin-right: -20px;
-              padding-left: 20px;
-              padding-right: 20px;
+              margin-left: -4%;
+              margin-right: -4%;
+              padding-left: 4%;
+              padding-right: 4%;
             }
           }
           
@@ -115,6 +115,7 @@
         height:100px
     }
 
+
         </style>
     </head>
     <body>
@@ -149,7 +150,7 @@
             {% endblock %}
     </div>
 
-<div class="row">
+<div class="row-fluid">
     <div class="span4">
         <div class="logo"> 
             <a href="/">  <img src="{{STATIC_URL}}img/logo.png"> </a> 
@@ -157,6 +158,7 @@
     </div>
 
     <div class="span5 offset3" id="auth">
+       
         </br></br>        
         <a href="#">О нас |</a>
         <a href="#">Как пользоваться? |</a>
@@ -173,7 +175,7 @@
 
 {%block application%}
 
-<div class="row">                             
+<div class="row-fluid">                             
                         
            
 
@@ -192,17 +194,17 @@
                             
                             <div class="tab-pane {{active_pane.1}}" id="descr"> 
                                 {%if barcode%}                                
-                                <div class="row">                             
-                                 <div class="span2">  
+                                <div class="row-fluid">                             
+                                 <div class="span3">  
                                      <div class="well sidebar-nav">
                                         <ul class="nav nav-list">
-                                            <li class="{{active_search.0}}"><a  href="/yandex/{{barcode}}/" >Яндекс.Маркет</a></li>
+                                            <li class="{{active_search.0}}"><a  href="/yandex/{{barcode}}/" >Я.Маркет</a></li>
                                               <li class="{{active_search.1}}" ><a href="/softmarket/{{barcode}}/" >SoftMarket</a></li>
                                        </ul>
                                       </div><!--/.well -->
                                 </div> 
                                 
-                                 <div class="span9">  
+                                 <div class="span8">  
                                     {%if active_search.0%} 
                                         <h3>Результаты с Яндекс.Маркет</h3>                                    
                                    {%else%}
@@ -225,17 +227,17 @@
                             
                             <div  class="tab-pane" id="comments" >
                                 {%if barcode%}
-                                <div class="row">                            
-                                     <div class="span2">  
+                                <div class="row-fluid">                            
+                                     <div class="span3">  
                                                  <div class="well sidebar-nav">
                                                     <ul class="nav nav-list">
-                                                        <li class="{{active_search.0}}" ><a href="/yandex/{{barcode}}/">Яндекс.Маркет</a></li>
-                                                          <li class="{{active_search.1}}"><a href="/softmarket/{{barcode}}/">SoftMarket</a></li>
+                                                        <li class="{{active_search.0}}" ><a href="/yandex/{{barcode}}/">Я.Маркет</a></li>
+                                                        <li class="{{active_search.1}}"><a href="/softmarket/{{barcode}}/">SoftMarket</a></li>
                                                          <!--<li><a href="#gucomments" data-toggle="tab">Goods Uncover</a></li> -->
                                                     </ul>
                                                   </div><!--/.well -->
                                     </div> 
-                                     <div class="span9">
+                                     <div class="span8">
                                     {%if active_search.0%} 
                                         <h3>Результаты с Яндекс.Маркет</h3>                                    
                                     {%else%}
@@ -337,7 +339,7 @@
     </div>    
     <div id="footer">
       <div class="container">
-        <p class="muted credit" align="center">&copy 2013 </p>
+        <p class="muted credit" >&copy 2013 </p>
       </div><!--container-->
          
     </div><!--footer-->
