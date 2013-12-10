@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.loader import get_template
 from django.template import RequestContext
-from models import UploadFile, Barcode, BarcodeYandex, BarcodeSoft, CommentsYandex, CommentsSoft
+from models import UploadFile, Barcode, BarcodeYandex, BarcodeSoft, CommentsYandex, CommentsSoft, History
 from goods_uncover.settings import STATICFILES_DIRS
 from forms import UploadForm
 from django.contrib import messages
@@ -24,6 +24,12 @@ def allfiles(request):
     })
     return HttpResponse(template.render(context))
 
+
+def addHistory(barcode, who):
+    if who.is_authenticated():
+        if barcode:
+            history = History(Who=who,What=barcode)
+            history.save()
 
 def addfile(request):
     #if not request.user.is_authenticated():
@@ -49,7 +55,7 @@ def addfile(request):
             elif uploadform.cleaned_data.get('barcode',False):
                  
                 sym = uploadform.cleaned_data.get('barcode',0)
-                barcode = Barcode.objects.filter(Barcode=sym)
+                barcode = Barcode.objects.filter(Barcode=sym)               
             if not barcode:
                 dct_data = barcode_search(sym)                
                 magic_numbers = str(dct_data['sym'])
@@ -62,6 +68,8 @@ def addfile(request):
                 descrYa = ya_market.ym_description(dct_data['modelId'][1])
                 barcode = Barcode(FK_Owner=us,Barcode=magic_numbers,Title=dct_data['name'])                
                 barcode.save()
+                addHistory(who=request.user, barcode=barcode)                
+
                 barcodeYa = BarcodeYandex(FK_Barcode=barcode,Description=descrYa)
                 barcodeYa.save()
                 
@@ -89,6 +97,7 @@ def addfile(request):
 
             else:
                 barcode = barcode[0]
+                addHistory(who=request.user, barcode=barcode) 
             request.session["find"]=True            
             
         else:

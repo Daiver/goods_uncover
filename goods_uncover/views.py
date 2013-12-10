@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import RequestContext
 
-from file_manage.models import UploadFile, Barcode, CommentsYandex, CommentsSoft, BarcodeYandex, BarcodeSoft
+from file_manage.models import UploadFile, Barcode, CommentsYandex, CommentsSoft, BarcodeYandex, BarcodeSoft, History
 from goods_uncover.settings import STATICFILES_DIRS
 from file_manage.forms import UploadForm, CheckedForm, CommentForm
 from django.contrib import messages
@@ -12,6 +12,12 @@ from django.contrib import messages
 from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 
 
+def getHistory(who):
+    h = []    
+    if who.is_authenticated():
+         h = History.objects.filter(Who=who).order_by("-Date")
+    return h
+    
 def yandex_search(request, barcode):
     descr = None
     barcode = Barcode.objects.filter(Barcode=barcode)#all().order_by("-id")#filter(FK_UploadFile__Owner=request.user).order_by("-FK_UploadFile__Uploaded_date")    
@@ -64,6 +70,7 @@ def yandex_search(request, barcode):
         'data': descr,
         'active_pane': active_pane,
         'active_search': active_search,
+        'history' : getHistory(request.user),
     })
     return HttpResponse(template.render(context))
 
@@ -117,6 +124,7 @@ def softmarket_search(request, barcode):
         'data': descr,
         'active_pane': active_pane,
         'active_search': active_search,
+       'history' : getHistory(request.user),
     })
     return HttpResponse(template.render(context))
 
@@ -148,6 +156,7 @@ def main_page2(request):
         'comments': comments,
         'barcode' : barcode.Barcode,
         'active_pane': active_pane,
+        'history' : getHistory(request.user),
     })
     return HttpResponse(template.render(context))
 

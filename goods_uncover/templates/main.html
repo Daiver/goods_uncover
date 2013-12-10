@@ -186,6 +186,9 @@
                             <li class={{active_pane.0}}><a id=1 href="#main" data-toggle="tab"><i class="icon-search"></i>Поиск</a></li>
                             <li class={{active_pane.1}}><a id=2 href="#descr" data-toggle="tab"><i class="icon-list"></i>Результаты</a></li>        
                             <li class=""><a id=3 href="#comments" data-toggle="tab"><i class="icon-user"></i>Комментарии</a></li>
+                            {%if user.is_authenticated %}
+                                <li class=""><a id=4 href="#history" data-toggle="tab"><i class="icon-bookmark"></i>История</a></li>
+                            {%endif%}
                       </ul>
                       <div class="tab-content">
                             <div class="tab-pane {{active_pane.0}}" id="main">
@@ -257,30 +260,25 @@
                             </div> <!--tabpane-->
 
 
-                        <div  class="tab-pane" id="gucomments" >
-                                <div class="row">                            
-                                     <div class="span2">  
-                                                 <div class="well sidebar-nav">
-                                                    <ul class="nav nav-list">
-                                                        <li><a href="#" data-toggle="tab">Яндекс.Маркет</a></li>
-                                                          <li><a href="#" data-toggle="tab">SoftMarket</a></li>
-                                                         <li class="active" ><a href="#gucomments" data-toggle="tab">Goods Uncover</a></li> 
-                                                    </ul>
-                                                  </div><!--/.well -->
-                                    </div> 
-                                     <div class="span9">           
-                                        <form>
-                                            {{commentform}}
-                                            {% if commentform%}
-                                                </br><input type="submit" value="Отправить" class="btn btn-success btn-medium">
-                                            {%endif%}
-                                        </form>
-                                         <div  id="comm">                                     
-                                            {%for com in ms%}
-                                                <b>Имя:</b> {{com.Author}} <br>
-                                                <b>Текст:</b> {{com.Text|linebreaksbr}} <br><br>
-                                            {%endfor%}
-                                        </div>
+                        <div  class="tab-pane" id="history" >
+                                <div class="row-fluid">                            
+                                     <div class="span12">  
+                                        <table class="table table-condensed" id="his">
+                                          <thead>
+                                            <tr>
+                                              <th>Штрих-код</th>
+                                              <th>Название</th> 
+                                                <th> Дата</th>                                               
+                                            </tr>
+                                          </thead>
+                                                {% for h in history%}
+                                                    <tr> 
+                                                         <td><a href="/yandex/{{h.What.Barcode}}/">{{h.What.Barcode}}</a></br></td>
+                                                         <td>{{h.What.Title}}</td>
+                                                        <td> {{h.Date}} </td>                  
+                                                    </tr >
+                                                {%endfor%}
+                                    </table>        
                                     </div>
                                 </div>                           
                             </div> <!--tabpane-->
