@@ -16,7 +16,7 @@ class UploadFile(models.Model):
 class Barcode(models.Model):
     FK_Owner = models.ForeignKey(User,null=True)
     Barcode = models.CharField(max_length=16)
-    Title = models.CharField(max_length=100)
+    Title = models.TextField(max_length=1000)
     #Description = models.TextField(max_length=1000)
     #Data = models.TextField(max_length=1000)
 
