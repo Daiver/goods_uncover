@@ -234,8 +234,8 @@
                                      <div class="span3">  
                                                  <div class="well sidebar-nav">
                                                     <ul class="nav nav-list">
-                                                        <li class="{{active_search.0}}" ><a href="/yandex/{{barcode}}/">Я.Маркет</a></li>
-                                                        <li class="{{active_search.1}}"><a href="/softmarket/{{barcode}}/">SoftMarket</a></li>
+                                                        <li class="{{active_search.0}}" id="yandex"><a href="/yandex/{{barcode}}/">Я.Маркет</a></li>
+                                                        <li class="{{active_search.1}}" id="softmarket"><a href="/softmarket/{{barcode}}/">SoftMarket</a></li>
                                                          <!--<li><a href="#gucomments" data-toggle="tab">Goods Uncover</a></li> -->
                                                     </ul>
                                                   </div><!--/.well -->
@@ -299,9 +299,16 @@
                             $("#upBlock").css('display','block');
                         
                         setTimeout(function () {
-                            $.get("/{{barcode}}/?page="+page,function(data){
-                                $("#comm").append($("#comm",data)).end();
-                            },'html');
+                            if($("#yandex").attr("class") == "active"){
+                                $.get("/yandex/{{barcode}}/?page="+page,function(data){
+                                    $("#comm").append($("#comm",data)).end();
+                                },'html');
+                            }
+                            if($("#softmarket").attr("class") == "active"){
+                                $.get("/softmarket/{{barcode}}/?page="+page,function(data){
+                                    $("#comm").append($("#comm",data)).end();
+                                },'html');
+                            }
                             $("#upBlock").css('display','none');
                             page = page + 1;
                         },100);
